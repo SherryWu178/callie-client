@@ -1,0 +1,52 @@
+{
+  "name": "callie-client",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:4000",
+  "dependencies": {
+    "@babel/runtime": "^7.10.3",
+    "@fullcalendar/bootstrap": "^4.4.2",
+    "@fullcalendar/core": "^4.4.2",
+    "@fullcalendar/daygrid": "^4.4.2",
+    "@fullcalendar/google-calendar": "^4.4.2",
+    "@fullcalendar/interaction": "^4.4.2",
+    "@fullcalendar/react": "^4.4.2",
+    "@fullcalendar/timegrid": "^4.4.2",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@wojtekmaj/react-datetimerange-picker": "^3.0.0",
+    "bootstrap": "^4.5.0",
+    "core-js": "^3.6.5",
+    "fullcalendar": "^3.10.2",
+    "jquery": "^3.5.1",
+    "moment": "^2.27.0",
+    "rc-time-picker": "^3.7.3",
+    "react": "^16.13.1",
+    "react-datetime-range-picker": "^2.0.5",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1"
+  },
+  "scripts": {
+    "start": "PORT=4000 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "plugin": "react-hooks/recommended"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

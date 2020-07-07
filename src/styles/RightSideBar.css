@@ -1,0 +1,10 @@
+.RightSiderBar {
+    justify-content: top;
+}
+
+.inner {
+    position: relative;
+    justify-content: top;
+    padding-bottom: 3%;
+  }
+
