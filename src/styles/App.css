@@ -27,7 +27,8 @@
   padding: 3%;
   align-items: left;
   justify-content: top;
-  font-size: calc( 5 + 1.5 vmin);
+  /* font-size: calc( 5 + 1.5 vmin); */
+  font-size: 14px;
   color: #282c34;
 }
 
