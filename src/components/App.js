@@ -14,15 +14,15 @@ class App extends Component {
   render(){
     return (
         <div className="App-body">
-          <WebScrapForm/> 
-            {/* <div className="row">
+          {/* <WebScrapForm/>  */}
+            <div className="row">
               <div className="col-md-8">
                 <DemoApp classNameName="App-body"/>
               </div>
               <div className="col-md-4">
                 <RightSideBar/>
               </div>
-            </div> */}
+            </div>
         </div>
     );
   }
