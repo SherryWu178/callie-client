@@ -7,6 +7,7 @@ import moment from 'moment'
 const WebScrapForm = () => {
     return(
         <div>
+        <div>
             <h3>Step 1: Enter details to retrieve deadline information</h3>
             <br/>
             <Form>
@@ -30,13 +31,30 @@ const WebScrapForm = () => {
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Module Code</Form.Label>
-                    <Form.Control type="password" placeholder="" />
+                    <Form.Control placeholder="CS1101" />
                 </Form.Group>
-                
-                <Button variant="primary" type="submit">
-                    Next
-                </Button>
             </Form>
+        </div>
+
+        <div>
+            <h3>Step 2: Upload an .ics file to sync you local calendar</h3>
+            <br/>
+            <Form>
+                <Form.File 
+                    id="custom-file"
+                    label="Upload an .ics file"
+                    custom
+                />
+                <Form.Text className="text-muted">
+                    You can download .ics files from Google Calendar and NUSMods
+                </Form.Text>
+                </Form>
+        </div>
+        <br/>
+        <Button variant="primary" type="submit">
+                    Submit
+        </Button>
+
         </div>
     )
 }
