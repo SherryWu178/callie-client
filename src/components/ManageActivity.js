@@ -10,43 +10,21 @@ import { userId } from '../helpers/userId'
 
 
 
-class RightSideBar extends Component {
+class ManageActivity extends Component {
   constructor(props) {
     super(props)
     this.state = {
         activities: [],
-        events: []
     }
   }
-
-
-  getEvents(){
-    const config = {
-      headers: { Authorization: `Bearer ${token}` }
-    };
-    
-    axios.get(`${BASE_URL}/api/v1/users/${userId}`, config)
-    .then(response => {
-      console.log("activities retrieved.")
-      this.setState({events:response.data.events})
-    })
-    .catch(error => {
-      console.log("Error!!!")
-      console.log(error)
-    })
-}
-
 
   getActivity(){
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
-
     axios.get(`${BASE_URL}/api/v1/users/${userId}`, config)
     .then(response => {
-      console.log("activities retrieved for right side bar" + response.data.activities)
-      console.log(response.data.activities)
-
+      console.log("activities retrieved." + response.data.activities)
       this.setState({activities: response.data.activities})
     })
     .catch(error => {
@@ -56,12 +34,9 @@ class RightSideBar extends Component {
   }
 
 
-
   componentDidMount() {
     this.getActivity()
-    this.getEvents()
   }
-
 
 
   render(){

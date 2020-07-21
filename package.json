@@ -2,7 +2,6 @@
   "name": "callie-client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4000",
   "engines": {
     "npm": "6.14.4",
     "node": "12.17.0",
@@ -33,10 +32,11 @@
     "react-datetime": "^2.16.3",
     "react-datetime-range-picker": "^2.0.5",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=4000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

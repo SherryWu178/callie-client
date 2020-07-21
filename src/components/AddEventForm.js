@@ -1,27 +1,21 @@
 import React, {useState} from 'react';
-import {Form, Button,Col} from 'react-bootstrap';
+import {Form, Button, Col} from 'react-bootstrap';
 import DatetimeRangePicker from 'react-datetime-range-picker';
-import Axios from 'axios';
+import axios from 'axios'
+import { BASE_URL } from './constants'
 import moment from 'moment'
+import { token } from '../helpers/token'
 
 
 const AddEventForm = ({ActivityList}) => {
-    var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time_for_input = today.getHours() + ":" + "00" + ":" + today.getSeconds();
-    var time_for_db = (today.getHours()-8) + ":" + "00" + ":" + today.getSeconds();
-
-    var dateTime_for_input = date+' '+time_for_input;
-    var dateTime_for_db = date+' '+time_for_db;
-
-
-    const [eventTitleValue, setEventTitle] = useState("");
+    var CurrentDate = moment();  
+    const [eventTitleValue, setEventTitleValue] = useState("");
     const [activityValue, setActivityValue] = useState("");
-    const [StartTimeValue, setStartTimeValue] = useState(dateTime_for_db);
-    const [EndTimeValue, setEndTimeValue] = useState(dateTime_for_db);
-    console.log(StartTimeValue);
-    console.log(EndTimeValue);
-    console.log((new Date(EndTimeValue) - new Date(StartTimeValue))/3600000);
+    const [StartTimeValue, setStartTimeValue] = useState(CurrentDate);
+    const [EndTimeValue, setEndTimeValue] = useState(CurrentDate);
+    const [completion, setCompletion] = useState(false);
+    const [useSelect, setUseSelect] = useState(true);
+
 
     const getActivityId = (string) => {
         var activityId = ActivityList[0].id
@@ -32,20 +26,29 @@ const AddEventForm = ({ActivityList}) => {
         }
         return activityId;
     }
+
     const handleSubmit = (e) => {
         var activityId = getActivityId(activityValue)
         console.log(StartTimeValue);
         console.log(EndTimeValue);
         console.log(new Date(EndTimeValue) - new Date(StartTimeValue));
+        const config = {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
+            }
+        };
 
-        Axios.post('/api/v1/events',
-            {
-                title: eventTitleValue,
+        axios.post(`${BASE_URL}/api/v1/events`,
+            {   title: eventTitleValue,
                 activity_id: activityId,
                 start_time: StartTimeValue,
                 end_time: EndTimeValue,
-                duration: (new Date(EndTimeValue) - new Date(StartTimeValue))/3600000
-            }
+                duration: moment.duration(moment(EndTimeValue, 'YYYY/MM/DD HH:mm')
+                .diff(moment(StartTimeValue, 'YYYY/MM/DD HH:mm'))
+                ).asHours(),
+                completion: completion,
+            }, config
           )
           .then(function (response) {
             console.log(response);
@@ -53,25 +56,51 @@ const AddEventForm = ({ActivityList}) => {
           .catch(function (error) {
             console.log(error);
           });
-          
-
     }
 
+    const handleChange = (e) => {setCompletion(e.target.checked); console.log("is it completed: " + completion)}
     
     return (
       <div>
             <p>Add New Event</p>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formGroupTitle">
-                    <Form.Control type="title" placeholder="Title" value={eventTitleValue} onChange={(e)=>setEventTitle(e.target.value)}/>
+                    <Form.Control type="title" placeholder="Title" value={eventTitleValue} onChange={(e)=>setEventTitleValue(e.target.value)}/>
                 </Form.Group>
-                <Form.Group controlId="formControlSelect">
-                    <Form.Label>Select Activity</Form.Label>
-                    <Form.Control placeholder="Activity" as="select" value={activityValue} onChange={(e)=>setActivityValue(e.target.value)}>
-                    {ActivityList.reverse().map(activity=>
-                        <option key={activity.id} value ={activity.title}>{activity.title}</option>)}
-                    </Form.Control>
-                </Form.Group>
+                
+                <Form.Row>
+                    <Form.Group as={Col} controlId="formControlSelect">
+                        <Form.Control 
+                            as="select" 
+                            value={useSelect} 
+                            onChange={(e)=>{setUseSelect(!useSelect)}}>
+                            <option key={1} value={true}>Select Activity</option>
+                            <option key={2} value={false}>Create New Activity</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {console.log("userSelect: " + useSelect)}
+                    {useSelect                     
+                    ? 
+                    <Form.Group as={Col} controlId="formControlSelect">
+                        <Form.Control 
+                            as="select" 
+                            value={activityValue} 
+                            onChange={(e)=>setActivityValue(e.target.value)}
+                            >
+                        {ActivityList.reverse().map(activity=>
+                            <option key={activity.id} value ={activity.title}>{activity.title}</option>)}
+                        </Form.Control>
+                    </Form.Group>
+                    :   <Form.Group as={Col} controlId="formGroupTitle">
+                        <Form.Control 
+                            type="title" 
+                            value={activityValue} 
+                            onChange={(e)=>setActivityValue(e.target.value)}
+                            />
+                        </Form.Group>
+                    }
+                </Form.Row>
+                
                 <Form.Group>
                     <Form.Row>
                         <Col sm={2}>
@@ -80,19 +109,27 @@ const AddEventForm = ({ActivityList}) => {
                         </Col>          
                         <Col sm={7}>
                             <DatetimeRangePicker 
-
                                     onStartDateChange = {e=>setStartTimeValue(e)}
                                     onEndDateChange = {e=>setEndTimeValue(e)}
                                     dateFormat = "DD-MM-YYYY"
                                     input={true}
                                     //startTimeConstraints ={{ minutes: {  step:15 }}}
                                     //endTimeConstraints ={{ minutes: {  step:15 }}}
-                                    inputProps ={{placeholder: dateTime_for_input}}
+                                    //inputProps ={{placeholder: dateTime_for_input}}
                                     >
                             </DatetimeRangePicker>
                         </Col>
                     </Form.Row>
                 </Form.Group>
+                <Form.Group controlId="formBasicCheckbox">
+                            <Form.Check 
+                                type="checkbox" 
+                                label="Mark as completed" 
+                                checked={completion}
+                                onChange={handleChange}/>
+                                {console.log(completion)}
+                      </Form.Group>
+      
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>            
@@ -102,69 +139,3 @@ const AddEventForm = ({ActivityList}) => {
   }
  
 export default AddEventForm
-
-// class AddEventForm extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             value: ""
-//         };
-//       }
-
-    
-//     render(){
-//         //const [value, onChange] = useState(new Date());
-//         const {StartDate, EndDate, handleSubmit, handleStartDateChange, handleEndDateChange} = this.props
-//         const {value} = this.state
-//         return(
-//             <div>
-//             Add New Event
-//             <Form>
-//                 <Form.Group controlId="formGroupTitle">
-//                     <Form.Control type="title" placeholder="Title" />
-//                 </Form.Group>
-//                 <Form.Group controlId="formGroupSubject">
-//                     <Form.Control type="subject" placeholder="Subject" />
-//                 </Form.Group>
-//                 <Form.Group controlId="formDateTimeRangePicker" color="white">
-//                     <DateTimeRangePicker clearAriaLabel = "clear" onChange={onChange} value={value} disableClock ={true}></DateTimeRangePicker>
-//                 </Form.Group>
-//                 <Button variant="primary" type="submit">
-//                     Submit
-//                 </Button>            
-//             </Form> 
-//             </div>
-//         )
-//     }
-// }
-
-
-                {/* <Form.Group controlId="formGroupTitle">
-                    <Form.Control type="title" placeholder="Title" />
-                </Form.Group>
-                <Form.Group controlId="formGroupSubject">
-                    <Form.Control type="subject" placeholder="Subject" />
-                </Form.Group>
-                <br/>
-                <Form.Row>
-                    <Col>
-                    <DatePicker
-                        onChange={handleStartDateChange}
-                        value={StartDate}
-                    />
-                        
-                    </Col>
-                    <Col>
-                        <Form.Control placeholder="Start Time" />
-                    </Col>
-                    -
-                    <Col>
-                        <Form.Control placeholder="End Time" />
-                    </Col>
-                    <Col>
-                        <DatePicker
-                            onChange={handleEndDateChange}
-                            value={EndDate}
-                        />                    
-                    </Col>
-                </Form.Row>    */}

@@ -1,14 +1,9 @@
-.App {
-  text-align: center;
+.Settings {
+  text-align: left;
+  padding: 1%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
+.Settings-header {
   background-color: white;
   min-height: 100vh;
   display: flex;
@@ -19,20 +14,18 @@
   color: #282c34;
 }
 
-.App-body {
+.Settings-body {
   /* background-color: #282c34; */
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 3%;
+  padding: 1%;
   align-items: left;
   justify-content: top;
-  /* font-size: calc( 5 + 1.5 vmin); */
   font-size: 14px;
   color: #282c34;
 }
 
-.App-link {
+.Settings-link {
   color: #61dafb;
 }
 
@@ -41,8 +34,3 @@
   background-color: #4AA69F;
 }
 
-.divider {
-  height: 1px;
-  width: 100%;
-  background-color: rgb(158, 158, 158);
-}

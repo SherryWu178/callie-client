@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios'
+import { token } from '../helpers/token'
+
 
 class Deadlines extends Component {
     constructor(props) {
@@ -9,9 +11,12 @@ class Deadlines extends Component {
             events: []
         }
       }
-
+    
     webscrapDeadlines() {
-        axios.get('/api/v1/deadlines/webscrap')
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+        axios.get('/api/v1/deadlines/webscrap', config)
         .then(response => {
           console.log("Deadline Webscraping!!!")
         })
@@ -19,7 +24,10 @@ class Deadlines extends Component {
       }
 
     importDeadlines() {
-        axios.get('/api/v1/deadlines/import')
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+        axios.get('/api/v1/deadlines/import', config)
         .then(response => {
           console.log("Deadline importing!!!")
         })

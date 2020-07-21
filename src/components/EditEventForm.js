@@ -1,162 +1,216 @@
-import React, {useState} from 'react';
-import {Form, Button,Col} from 'react-bootstrap';
+import React from 'react';
+import {Form, Button, Col, ButtonGroup} from 'react-bootstrap';
 import DatetimeRangePicker from 'react-datetime-range-picker';
-import Axios from 'axios';
+import axios from 'axios'
+import { BASE_URL } from './constants'
+import moment from 'moment'
+import { token } from '../helpers/token'
 
-
-const DeleteEventForm = ({ActivityList}) => {
-    var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = (today.getHours()-8) + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date+' '+time;
-
-    const [eventTitleValue, setEventTitle] = useState("");
-    const [activityValue, setActivityValue] = useState("");
-    const [StartTimeValue, setStartTimeValue] = useState(dateTime);
-    const [EndTimeValue, setEndTimeValue] = useState(dateTime);
+export default class AddEventForm extends React.Component{
     
-    const getActivityId = (string) => {
-        var activityId = 0
-        for (var i = 0; i < ActivityList.length; i++){
-            if (string === ActivityList[i].title){
-                activityId = ActivityList[i].id
-            } else {
-                activityId = ActivityList[0].id
+    constructor(props) {
+        super(props)
+        this.state = {
+            eventTitleValue: this.props.currentEvent.title,
+            activityValue: '',
+            StartTimeValue: this.props.currentEvent.start,
+            EndTimeValue: this.props.currentEvent.end,
+            completion: this.props.currentEvent.extendedProps.completion,
+            useSelect: true
+        
+        }
+
+        this.getActivityTitle = this.getActivityTitle.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.deleteEvent = this.deleteEvent.bind(this);
+
+    }
+
+    getActivityTitle = () => {
+        const config = {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
             }
+        };
+        const id = this.props.currentEvent.extendedProps.activity_id;
+        axios.get(`${BASE_URL}/api/v1/activities/${id}`, config)
+        .then(response=>{
+            console.log('activity is:' + response.data.title)
+            this.setState({activityValue: response.data.title})
+        })
+        .catch(error => {
+            console.log("Error!!!")
+            console.log(error)
+        })
+    }
+
+    getActivityId = (string) => {
+        var activityId = this.props.ActivityList[0].id
+        for (var i = 0; i < this.props.ActivityList.length; i++){
+            if (string === this.props.ActivityList[i].title){
+                activityId = this.props.ActivityList[i].id
+            } 
         }
         return activityId;
     }
-    const handleSubmit = (e) => {
-        var activityId = getActivityId(activityValue)
-        console.log(StartTimeValue);
-        console.log(EndTimeValue);
-        console.log(activityId);
+    
+    deleteEvent = () => {
+        console.log("delete")
+        console.log(this.props.currentEvent.id)
+        const config = {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
+            },
+            data: { id: this.props.currentEvent.id }
 
-        Axios.post('/api/v1/events',
+        };
+        axios.delete(`${BASE_URL}/api/v1/events/${this.props.currentEvent.id}`, config)
+        window.location.reload(false);
+    }
+
+    handleSubmit = (e) => {
+        console.log('submitting')
+        const {eventTitleValue, StartTimeValue, EndTimeValue, completion} = this.state
+        var activityId = this.getActivityId(this.state.activityValue)
+        const config = {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
+            }
+        };
+        axios.patch(`${BASE_URL}/api/v1/events/${this.props.currentEvent.id}`,
             {
                 title: eventTitleValue,
                 activity_id: activityId,
                 start_time: StartTimeValue,
-                end_time: EndTimeValue
-            }
+                end_time: EndTimeValue,
+                duration: moment.duration(moment(EndTimeValue, 'YYYY/MM/DD HH:mm')
+                .diff(moment(StartTimeValue, 'YYYY/MM/DD HH:mm'))
+                ).asHours(),
+                completion: completion,
+            }, config
           )
           .then(function (response) {
+            window.location.reload(false);
             console.log(response);
           })
           .catch(function (error) {
             console.log(error);
           });
-          
+    }
+
+    componentDidMount(){
+        this.getActivityTitle()
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        console.log('changing')
+        if (prevProps.currentEvent !== this.props.currentEvent){
+        this.setState({
+            eventTitleValue: this.props.currentEvent.title,
+            StartTimeValue: this.props.currentEvent.start,
+            EndTimeValue: this.props.currentEvent.end,
+        })
+        this.getActivityTitle()
+        }
 
     }
 
-    
-    return (
-      <div>
-            <p>Add New Event</p>
-            <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formGroupTitle">
-                    <Form.Control type="title" placeholder="Title" value={eventTitleValue} onChange={(e)=>setEventTitle(e.target.value)}/>
-                </Form.Group>
-                <Form.Group controlId="formControlSelect">
-                    <Form.Label>Select Activity</Form.Label>
-                    <Form.Control placeholder="Activity" as="select" value={activityValue} onChange={(e)=>setActivityValue(e.target.value)}>
-                    {ActivityList.map(activity=>
-                        <option key={activity.id} value ={activity.title}>{activity.title}</option>)}
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Row>
-                        <Col sm={2}>
-                            <Form.Row>Start:</Form.Row>
-                            <Form.Row>End:</Form.Row>
-                        </Col>          
-                        <Col sm={7}>
-                            <DatetimeRangePicker 
-                                    onStartDateChange = {e=>setStartTimeValue(e)}
-                                    onEndDateChange = {e=>setEndTimeValue(e)}
-                                    dateFormat = "DD-MM-YYYY"
-                                    input={true}
-                                    >
-                            </DatetimeRangePicker>
-                        </Col>
-                    </Form.Row>
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button> 
-                <Button variant="primary" type="submit">
-                    Delete
-                </Button>             
-            </Form> 
-            </div>
-    );
-  }
- 
-export default DeleteEventForm
+    changeTitle = (e) => {
+        this.setState({eventTitleValue: e.target.value})
+        console.log(this.state.eventTitleValue)
+    }
 
-// class AddEventForm extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             value: ""
-//         };
-//       }
+    render(){
+        const {eventTitleValue, activityValue, StartTimeValue, EndTimeValue, useSelect, completion} = this.state
+        return (
+            <div>
+                  <p>Add New Event</p>
+                  <Form onSubmit={this.handleSubmit}>
+                      <Form.Group controlId="formGroupTitle">
+                          <Form.Control type="title" placeholder="Title" value={eventTitleValue} onChange={this.changeTitle}/>
+                      </Form.Group>
+                      <Form.Row>
+                    
+                    <Form.Group as={Col} controlId="formControlSelect">
+                        <Form.Control 
+                            as="select" 
+                            value={useSelect} 
+                            onChange={(e)=>{this.setState(!useSelect)}}>
+                            <option key={1} value={true}>Select Activity</option>
+                            <option key={2} value={false}>Create New Activity</option>
+                        </Form.Control>
+                    </Form.Group>
+                    {console.log("userSelect: " + useSelect)}
+                    {useSelect                     
+                    ? 
+                    <Form.Group as={Col} controlId="formControlSelect">
+                        <Form.Control 
+                            as="select" 
+                            value={activityValue} 
+                            onChange={(e)=>this.setState({activityValue:e.target.value})}
+                            >
+                        {this.props.ActivityList.reverse().map(activity=>
+                            <option key={activity.id} value ={activity.title}>{activity.title}</option>)}
+                        </Form.Control>
+                    </Form.Group>
+                    :   <Form.Group as={Col} controlId="formGroupTitle">
+                        <Form.Control 
+                            type="title" 
+                            value={activityValue} 
+                            onChange={(e)=>this.setState({activityValue:e.target.value})}
+                            />
+                        </Form.Group>
+                    }
+                </Form.Row>
+                      <Form.Group>
+                          <Form.Row>
+                              <Col sm={2}>
+                                  <Form.Row>Start:</Form.Row>
+                                  <Form.Row>End:</Form.Row>
+                              </Col>          
+                              <Col sm={7}>
+                                  <DatetimeRangePicker 
+                                          startDate={StartTimeValue}
+                                          endDate={EndTimeValue}
+                                          onStartDateChange = {e=>this.setState({StartTimeValue:e})}
+                                          onEndDateChange = {e=>this.setState({EndTimeValue:e})}
+                                          dateFormat = "DD-MM-YYYY"
+                                          input={true}
+                                          //startTimeConstraints ={{ minutes: {  step:15 }}}
+                                          //endTimeConstraints ={{ minutes: {  step:15 }}}
+                                          //inputProps ={{placeholder: dateTime_for_input}}
+                                          >
+                                  </DatetimeRangePicker>
+                              </Col>
+                          </Form.Row>
+                      </Form.Group>
 
-    
-//     render(){
-//         //const [value, onChange] = useState(new Date());
-//         const {StartDate, EndDate, handleSubmit, handleStartDateChange, handleEndDateChange} = this.props
-//         const {value} = this.state
-//         return(
-//             <div>
-//             Add New Event
-//             <Form>
-//                 <Form.Group controlId="formGroupTitle">
-//                     <Form.Control type="title" placeholder="Title" />
-//                 </Form.Group>
-//                 <Form.Group controlId="formGroupSubject">
-//                     <Form.Control type="subject" placeholder="Subject" />
-//                 </Form.Group>
-//                 <Form.Group controlId="formDateTimeRangePicker" color="white">
-//                     <DateTimeRangePicker clearAriaLabel = "clear" onChange={onChange} value={value} disableClock ={true}></DateTimeRangePicker>
-//                 </Form.Group>
-//                 <Button variant="primary" type="submit">
-//                     Submit
-//                 </Button>            
-//             </Form> 
-//             </div>
-//         )
-//     }
-// }
-
-
-                {/* <Form.Group controlId="formGroupTitle">
-                    <Form.Control type="title" placeholder="Title" />
-                </Form.Group>
-                <Form.Group controlId="formGroupSubject">
-                    <Form.Control type="subject" placeholder="Subject" />
-                </Form.Group>
-                <br/>
-                <Form.Row>
-                    <Col>
-                    <DatePicker
-                        onChange={handleStartDateChange}
-                        value={StartDate}
-                    />
-                        
-                    </Col>
-                    <Col>
-                        <Form.Control placeholder="Start Time" />
-                    </Col>
-                    -
-                    <Col>
-                        <Form.Control placeholder="End Time" />
-                    </Col>
-                    <Col>
-                        <DatePicker
-                            onChange={handleEndDateChange}
-                            value={EndDate}
-                        />                    
-                    </Col>
-                </Form.Row>    */}
+                      <Form.Group controlId="formBasicCheckbox">
+                            <Form.Check 
+                                type="checkbox" 
+                                label="Mark as completed"  
+                                checked={completion}
+                                onChange={(e) => {this.setState({completion: e.target.checked})}}
+                            />
+                      </Form.Group>
+      
+                      <ButtonGroup>
+                          <Button variant="primary" onClick={this.deleteEvent}>
+                              Delete
+                          </Button>
+                      </ButtonGroup> 
+                      &nbsp;&nbsp;
+                      <ButtonGroup>
+                          <Button variant="primary" type="submit">
+                              Update
+                          </Button>  
+                      </ButtonGroup>    
+                
+                  </Form> 
+              </div>
+          );
+    }
+}

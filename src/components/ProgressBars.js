@@ -13,11 +13,9 @@ const ProgressBars = ({ActivityList, EventList}) => {
         var date1 = new Date(e.start_time)
         var date2 = new Date(e.start_time)
         return date1 >= startOfWeek && date2 <= endOfWeek;
-          
       }
 
     var filtered = EventList.filter(checkDatetime);
-    console.log(filtered)
 
     var map = new Map();
     for (var i = 0; i < filtered.length; i++) {
@@ -32,15 +30,25 @@ const ProgressBars = ({ActivityList, EventList}) => {
         }
     }
 
-    console.log(map)
-
     return(
     <div >
         <h3>Your Progress For The Week</h3>
-        {ActivityList.map(activity=>
-        <div key={activity.id}>
-            {activity.title} <ProgressBar variant = "info" now={(map.get(activity.id.toString())*(10))} />
-        </div>)}
+        
+        {
+        ActivityList.map(activity=>{
+            var now = Math.round(map.get(activity.id.toString())*(10))
+            if (!now){
+                now = 0
+            }
+            return  <div key={activity.id}>
+                        {activity.title}
+                        <ProgressBar 
+                        label = {now+"%"}
+                        now = {now} 
+                        />
+                    </div>
+        })
+        }
     </div>
     )
 }

@@ -5,9 +5,10 @@ import { BASE_URL } from './constants'
 import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
 import { history } from '../helpers/history'
+import NavBar from './NavBar';
 
 
-export default class WebScrapForm extends React.Component {
+export default class SetUp extends React.Component {
 
   constructor(props){
     super(props)
@@ -65,11 +66,58 @@ export default class WebScrapForm extends React.Component {
         })
       }
     
+    saveIcsFile = () => {
+      const data = new FormData()
+      data.append('file', this.state.file)
+      console.log(this.state.file)
+      const config = {
+        headers: { 'Authorization': `Bearer ${token}`}
+      };
+      axios.post(`${BASE_URL}/api/v1/events/write`, data, config)
+      .then(response => {
+        console.log(data)
+        console.log("Write ics file")
+      })
+      .catch(error => {
+        console.log("Error!!!")
+        console.log(error)
+      })
+    }
+      
+    readEvents = () => {
+        const config = {
+          headers: { 
+          'Authorization': `Bearer ${token}`}
+        };
     
+        axios.get(`${BASE_URL}/api/v1/events/read`, config)
+        .then(response => {
+          console.log("Reading Event!!!")
+        })
+        .catch(error => console.log(error))
+      }
+    
+    
+    importEvents= () => {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+    
+        axios.get(`${BASE_URL}/api/v1/events/import`, config)
+        .then(response => {
+          console.log("Importing Events!!!")
+        })
+        .catch(error => {
+          console.log("Error!!!")
+          console.log(error)
+        })
+      }
 
     handleSubmit = () => {
-      this.webscrapDeadline()
-      this.importDeadlines()
+      //this.webscrapDeadline()
+      this.saveIcsFile()
+      this.readEvents()
+      this.importEvents()
       history.push('/');
       window.location.reload(false);
     }
@@ -83,9 +131,14 @@ export default class WebScrapForm extends React.Component {
     render(){
       const {url, email, password, mod, file} = this.state
         return(
+          <React.Fragment>
+            <div>
+            <NavBar currentUser = {JSON.parse(localStorage.getItem('user'))}/>
+            </div>
             <div>
             <div>
-                <h5>Enter details to retrieve deadline information</h5>
+                <h5>Step 1: Enter details to retrieve deadline information</h5>
+                <br/>
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect1">
                         <Form.Label>Website</Form.Label>
@@ -116,11 +169,29 @@ export default class WebScrapForm extends React.Component {
                     </Form.Group>
                 </Form>
             </div>
-
-            <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
+    
+            <div>
+                <h5>Step 2: Upload an .ics file to sync you local calendar</h5>
+                <br/>
+                <Form>
+                    <Form.File 
+                        id="custom-file"
+                        label="Upload an .ics file"
+                        onChange={this.changeFile}
+                        custom
+                    />
+                    {console.log(this.state.file)}
+                    <Form.Text className="text-muted">
+                        You can download .ics files from Google Calendar and NUSMods
+                    </Form.Text>
+                    </Form>
+            </div>
+            <br/>
+            <Button variant="primary" type="submit" onClick={this.handleSubmit}>
                         Submit
             </Button>
             </div>
+          </React.Fragment>
         )
     }
     

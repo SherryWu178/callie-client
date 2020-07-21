@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import { token } from '../helpers/token'
+import { userId } from '../helpers/userId'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { BASE_URL } from './constants'
@@ -15,41 +17,10 @@ export default class DemoApp extends React.Component {
         events: [],
     }
   }
-
-
-  readEvents() {
-    axios.get(`${BASE_URL}//api/v1/events/read`)
-    .then(response => {
-      console.log("Reading Event!!!")
-    })
-    .catch(error => console.log(error))
-  }
-
-  importDeadlines() {
-    axios.get(`${BASE_URL}/api/v1/deadlines/import`)
-    .then(response => {
-      console.log("Importing Deadlines!!!")
-    })
-    .catch(error => {
-      console.log("Error!!!")
-      console.log(error)
-    })
-  }
-
-  importEvents() {
-    axios.get(`${BASE_URL}/api/v1/events/import`)
-    .then(response => {
-      console.log("Importing Events!!!")
-    })
-    .catch(error => {
-      console.log("Error!!!")
-      console.log(error)
-    })
-  }
+  
 
   handleEventClick = (e) => {
-    console.log(e.event.id)
-    this.deleteEvent(e)
+    this.props.handleCurrentEventChange(e)
   } 
 
   deleteEvent = (e) => {
@@ -58,15 +29,16 @@ export default class DemoApp extends React.Component {
     axios.delete(`${BASE_URL}/api/v1/events/` + e.event.id , {
       data: { id: e.event.id }
      })
-
   }
 
   getEvents() {
-    axios.get(`${BASE_URL}/api/v1/events`)
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    axios.get(`${BASE_URL}/api/v1/users/${userId}`, config)
     .then(response => {
       console.log("Events retrieved.")
-      this.setState((state)=>({events: state.events.concat(response.data)}))
-      console.log("Fetched events: " + this.state.events)
+      this.setState((state)=>({events: state.events.concat(response.data.events)}))
     })
     .catch(error => {
       console.log("Error!!!")
@@ -75,13 +47,13 @@ export default class DemoApp extends React.Component {
   }
 
   getDeadlines() {
-    axios.get(`${BASE_URL}/api/v1/deadlines`)
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    axios.get(`${BASE_URL}/api/v1/users/${userId}`, config)
     .then(response => {
       console.log("Deadlinese retrieved.")
-      this.setState((state)=>({events: state.events.concat(response.data)}))
-      // console.log("EVENTS========")
-      // console.log(this.state.events)
-
+      this.setState((state)=>({events: state.events.concat(response.data.deadlines)}))
     })
     .catch(error => {
       console.log("Error!!!")
@@ -90,11 +62,13 @@ export default class DemoApp extends React.Component {
   }
 
   componentDidMount() {
-    this.importDeadlines()
-    this.readEvents()
-    this.importEvents()
+    // this.importDeadlines()
+    // this.readEvents()
     this.getEvents()
     this.getDeadlines()
+    console.log("User is " + localStorage.getItem('user'))
+    console.log("User_id is " + localStorage.getItem('user_id'))
+    console.log("Token is " + localStorage.getItem('token'))
   }
   
   reformatJson = (events) => {
@@ -145,11 +119,6 @@ export default class DemoApp extends React.Component {
           eventClick = {this.handleEventClick}
           events={reformatted}
           allDayText='Deadline'/>
-        {/* <ul>
-            {events.map(event => {
-              return <li key = {event.id}> {event.title} {event.start_time} </li>
-            })}    
-        </ul>   */}
       </div>
     )
   }
