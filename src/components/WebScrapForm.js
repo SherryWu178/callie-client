@@ -34,15 +34,14 @@ export default class WebScrapForm extends React.Component {
           mod: this.state.mod
         }
         console.log(data)
-
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-
         axios.post(`${BASE_URL}/api/v1/deadlines/webscrap`, data, config)
         .then(response => {
           console.log(response)
           console.log("Webscrap Deadlines!!!")
+          this.importDeadlines()
         })
         .catch(error => {
           console.log("Error!!!")
@@ -69,9 +68,6 @@ export default class WebScrapForm extends React.Component {
 
     handleSubmit = () => {
       this.webscrapDeadline()
-      this.importDeadlines()
-      history.push('/');
-      window.location.reload(false);
     }
 
     changeFile = (e) => {

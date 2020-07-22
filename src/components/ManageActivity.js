@@ -1,8 +1,6 @@
 import React, {Component, setState} from 'react';
 import axios from 'axios';
-import ProgressBars from './ProgressBars';
-import AddEventForm from './AddEventForm';
-import EditEventForm from './EditEventForm';
+import SingleActivity from './SingleActivity';
 import '../styles/RightSideBar.css';
 import { BASE_URL } from './constants';
 import { token } from '../helpers/token'
@@ -40,22 +38,14 @@ class ManageActivity extends Component {
 
 
   render(){
-    const {currentEvent} = this.props
-    const {activities, events} = this.state    
+    const {activities} = this.state    
     return (
-        <div className="App-body">
-          <div className="outer">
-            <div className="inner">
-              {console.log('currentEvent: ' + currentEvent)}
-              {this.props.currentEvent === null
-                ? <AddEventForm ActivityList = {activities}/>
-                : <EditEventForm ActivityList = {activities} currentEvent = {currentEvent}/>
-              }
-              
-            </div>
-            <div className="inner">
-              <ProgressBars ActivityList = {activities} EventList = {events}/>
-            </div>
+        <div>
+        <h5>Manage your activities</h5>
+          <div>
+            {activities.map(activity=>
+              <SingleActivity activity={activity}/>
+            )}
           </div>
         </div>
     );
@@ -63,5 +53,5 @@ class ManageActivity extends Component {
 }
 
 
-export default RightSideBar;
+export default ManageActivity;
 

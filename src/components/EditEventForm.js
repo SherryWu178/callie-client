@@ -10,6 +10,7 @@ export default class AddEventForm extends React.Component{
     
     constructor(props) {
         super(props)
+        console.log(this.props.currentEvent)
         this.state = {
             eventTitleValue: this.props.currentEvent.title,
             activityValue: '',
@@ -112,6 +113,7 @@ export default class AddEventForm extends React.Component{
             eventTitleValue: this.props.currentEvent.title,
             StartTimeValue: this.props.currentEvent.start,
             EndTimeValue: this.props.currentEvent.end,
+            completion: this.props.currentEvent.extendedProps.completion
         })
         this.getActivityTitle()
         }

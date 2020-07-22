@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Form, Button, InputGroup} from 'react-bootstrap';
-import axios from 'axios';
 import NavBar from './NavBar';
-import Divider from './Divider'
 import UploadICSForm from './UploadICSForm'
 import WebScrapForm from './WebScrapForm'
+import ManageActivity from './ManageActivity'
+
 
 
 import '../styles/Settings.css';
@@ -34,6 +34,10 @@ export default class Setting extends React.Component {
               <div className="divider"/>
               <div className="Settings-body">
                 <UploadICSForm/>
+              </div>
+              <div className="divider"/>
+              <div className="Settings-body">
+                <ManageActivity/>
               </div>
             </div>
           </React.Fragment>

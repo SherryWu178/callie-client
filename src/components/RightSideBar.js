@@ -44,7 +44,6 @@ class RightSideBar extends Component {
 
     axios.get(`${BASE_URL}/api/v1/users/${userId}`, config)
     .then(response => {
-      console.log("activities retrieved for right side bar" + response.data.activities)
       console.log(response.data.activities)
 
       this.setState({activities: response.data.activities})
@@ -71,7 +70,6 @@ class RightSideBar extends Component {
         <div className="App-body">
           <div className="outer">
             <div className="inner">
-              {console.log('currentEvent: ' + currentEvent)}
               {this.props.currentEvent === null
                 ? <AddEventForm ActivityList = {activities}/>
                 : <EditEventForm ActivityList = {activities} currentEvent = {currentEvent}/>
