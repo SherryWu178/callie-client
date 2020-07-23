@@ -13,6 +13,7 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [username, setUsername] = useState("");
+  const [error, setError] = useState({})
 
   const signup = () =>  {
     var creds = {
@@ -20,7 +21,8 @@ export default function SignUpForm() {
         username: username,
         email: email,
         password: password,
-        password_confirmation: passwordConfirmation
+        password_confirmation: passwordConfirmation,
+        error: {}
       }
     }
 
@@ -35,6 +37,12 @@ export default function SignUpForm() {
       })
       .catch(err => {
         console.log(err)
+        if (!username||!email||!password||!passwordConfirmation){
+          setError(1)
+
+        } else {
+          setError(2)
+        }
       })
   }
 
@@ -95,6 +103,12 @@ export default function SignUpForm() {
         <FormGroup >
           Already have an account? Click <Link to="/login"> here </Link>to log in
         </FormGroup>
+        {error === 1 && 
+              <Form.Text style={{color: "red"}}>Please fill in all fields.</Form.Text>}
+            
+        {error === 2 && 
+              <Form.Text 
+              style={{color: "red"}}>Your password does not meet the requirement. Please try again.</Form.Text>}
       </Form>
     </div>
     </React.Fragment>

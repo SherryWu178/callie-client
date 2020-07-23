@@ -13,7 +13,8 @@ export default class UploadICSForm extends React.Component {
     constructor(props){
       super(props)
       this.state = {
-        file:{}
+        file:{},
+        error:0
       }
     }
 
@@ -36,6 +37,12 @@ export default class UploadICSForm extends React.Component {
         console.log("Write ics file")
       })
       .catch(error => {
+        console.log(this.state.file)
+        if (this.state.error===0){
+          this.setState({error:1})
+        } else {
+          this.setState({error:2})
+        }
         console.log("Error!!!")
         console.log(error)
       })
@@ -55,7 +62,8 @@ export default class UploadICSForm extends React.Component {
           console.log("Reading Event!!!")
           this.importEvents()
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          console.log(error)})
       }
     
     
@@ -89,7 +97,7 @@ export default class UploadICSForm extends React.Component {
     render(){
         return(
             <div>
-            <h5>Upload an .ics file to sync you local calendar</h5>
+            <h5>Upload your calendar <strong>(.ics)</strong> file from NusMods.com</h5>
             <div>
                 <Form>
                     <Form.File 
@@ -108,6 +116,13 @@ export default class UploadICSForm extends React.Component {
             <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
                         Submit
             </Button>
+            {this.state.error === 1 && 
+              <Form.Text style={{color: "red"}}>Please upload a file.</Form.Text>}
+            {this.state.error === 2 && 
+              <Form.Text 
+              className="text" 
+              text-color = "red"
+              style={{color: "red"}}>The file format is not supported. Please check again.</Form.Text>}
             </div>
         )
     }

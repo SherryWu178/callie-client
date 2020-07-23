@@ -10,6 +10,7 @@ import NavBar from './NavBar';
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState({})
 
 
   const handleSubmit = (event) => {
@@ -40,6 +41,11 @@ export default function Login() {
     })
     .catch(err => {
       console.log(err)
+      if (!email||!password){
+        setError(1)
+      } else {
+        setError(2)
+      }
     });
 
   };
@@ -77,6 +83,13 @@ export default function Login() {
           <FormGroup >
             First time using NusCallie? Click <Link to="/signup"> here </Link>to sign up
           </FormGroup>
+          {error === 1 && 
+              <Form.Text style={{color: "red"}}>Please fill in all fields.</Form.Text>}
+          {error === 2 && 
+              <Form.Text 
+              className="text" 
+              text-color = "red"
+              style={{color: "red"}}>Your login credentials could not be verified, please try again.</Form.Text>}
         </Form>
       </div>
     </React.Fragment>

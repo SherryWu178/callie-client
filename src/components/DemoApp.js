@@ -3,7 +3,7 @@ import axios from 'axios'
 import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
 import FullCalendar from '@fullcalendar/react'
-// import timeGridPlugin from '@fullcalendar/timegrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
 import { BASE_URL } from './constants'
 
 
@@ -20,10 +20,6 @@ export default class DemoApp extends React.Component {
   handleEventClick = (e) => {
     this.props.handleCurrentEventChange(e)
   } 
-
-  handleMouseLeave = (e) => {
-    this.props.handleCurrentEventChange(null)
-  }
 
   deleteEvent = (e) => {
     console.log("delete")
@@ -109,6 +105,18 @@ export default class DemoApp extends React.Component {
     const reformatted = this.reformatJson(this.state.events)
     return (
       <div >
+        <FullCalendar 
+          defaultView="timeGridWeek"
+          firstDay ={1}
+          plugins={[timeGridPlugin]} 
+          height={600}
+          contentHeight={600}
+          width= {150}
+          editable={true}
+          slotMinTime = "07:00:00"
+          eventClick = {this.handleEventClick}
+          events={reformatted}
+          allDayText='Deadline'/>
       </div>
     )
   }

@@ -13,10 +13,10 @@ export default class WebScrapForm extends React.Component {
     super(props)
     this.state = {
       url: 'https://coursemology.org/users/sign_in',
-      email: '',
-      password:'',
-      mod:'',
-      file:{}
+      email: {},
+      password:{},
+      mod:{},
+      error: {}
   }
   }
     handleChange = (e) => {
@@ -27,12 +27,14 @@ export default class WebScrapForm extends React.Component {
     }
 
     webscrapDeadline = () => {
+      const {url,email,password,mod} = this.state;
         const data = {
-          url: this.state.url,
-          email: this.state.email,
-          password:this.state.password,
-          mod: this.state.mod
+          url: url,
+          email: email,
+          password: password,
+          mod: mod,
         }
+
         console.log(data)
         const config = {
           headers: { Authorization: `Bearer ${token}` }
@@ -46,6 +48,11 @@ export default class WebScrapForm extends React.Component {
         .catch(error => {
           console.log("Error!!!")
           console.log(error)
+          if (!url||!email||!password||!mod){
+            this.setState({error:1})
+          } else {
+            this.setState({error:2})
+          }
         })
       }
     
@@ -77,29 +84,24 @@ export default class WebScrapForm extends React.Component {
     } 
 
     render(){
-      const {url, email, password, mod, file} = this.state
         return(
             <div>
             <div>
-                <h5>Enter details to retrieve deadline information</h5>
+                <h5>Coursemology account details</h5>
                 <Form>
-                    <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Label>Website</Form.Label>
-                        <Form.Control name="url" as="select" placeholder="Select website"　onChange={this.handleChange}>
-                            <option key={1} value="https://coursemology.org/users/sign_in">Coursemology</option>
-                            <option key={2} value="https://luminus.nus.edu.sg/">LumiNUS</option>
-                        </Form.Control>
-                    </Form.Group>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control type="email" name="email" placeholder="Enter email" onChange={this.handleChange}/>
                         <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
+                        The email used for Coursemology account with the selected module code below.
                         </Form.Text>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleChange}/>
+                        <Form.Text className="text-muted">
+                        The password used for the same Coursemology account.
+                        </Form.Text>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
                       <Form.Label>Module Code</Form.Label>
@@ -107,7 +109,7 @@ export default class WebScrapForm extends React.Component {
                             <InputGroup.Prepend>
                               <InputGroup.Text>CS</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <Form.Control placeholder="1101" name="mod" onChange={this.handleChange}/>
+                            <Form.Control placeholder="1010S" name="mod" onChange={this.handleChange}/>
                         </InputGroup>
                     </Form.Group>
                 </Form>
@@ -116,6 +118,15 @@ export default class WebScrapForm extends React.Component {
             <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
                         Submit
             </Button>
+
+            {this.state.error === 1 && 
+              <Form.Text className="text-muted">Please fill in all fields</Form.Text>}
+            
+            {this.state.error === 2 && 
+              <Form.Text 
+              className="text" 
+              text-color = "red"
+              style={{color: "red"}}>Your login credentials could not be verified, please try again.</Form.Text>}
             </div>
         )
     }

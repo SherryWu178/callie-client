@@ -40,8 +40,13 @@ class ManageActivity extends Component {
     const {activities} = this.state    
     return (
         <div>
-        <h5>Manage your activities</h5>
-        <h6>Delete the activity will delete all related events/deadlines.</h6>
+        <h5>Manage your module commitments!</h5>
+        <h7>Do yo feel your module actually require less or more than the <strong>recommended 10 hours</strong>?</h7>
+        <br/>
+        <h7>Edit the xpected module commitment hours to keep track of the time you realistically need for the module.</h7>
+        <br/>
+        <h7>Delete the module you may have droped. Delete the activity will delete <strong>all</strong> related events/deadlines.</h7>
+        <br/> <br/>
           <div>
             {activities.map(activity=>
               <SingleActivity activity={activity}/>
