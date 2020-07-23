@@ -106,8 +106,8 @@ const AddEventForm = ({ActivityList}) => {
                             as="select" 
                             value={useSelect} 
                             onChange={(e)=>{setUseSelect(!useSelect)}}>
-                            <option key={1} value={true}>Select Activity</option>
-                            <option key={2} value={false}>Create New Activity</option>
+                            <option key={1} value={true}>Select Tag</option>
+                            <option key={2} value={false}>Create New Tag</option>
                         </Form.Control>
                     </Form.Group>
                     {console.log("userSelect: " + useSelect)}
