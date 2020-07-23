@@ -3,11 +3,9 @@ import axios from 'axios'
 import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
 import FullCalendar from '@fullcalendar/react'
-import timeGridPlugin from '@fullcalendar/timegrid'
+// import timeGridPlugin from '@fullcalendar/timegrid'
 import { BASE_URL } from './constants'
 
-// import '@fullcalendar/core/main.css';
-// import '@fullcalendar/timegrid/main.css';
 
 export default class DemoApp extends React.Component {
   
@@ -111,18 +109,6 @@ export default class DemoApp extends React.Component {
     const reformatted = this.reformatJson(this.state.events)
     return (
       <div >
-        <FullCalendar 
-          defaultView="timeGridWeek"
-          firstDay ={1}
-          plugins={[ timeGridPlugin ]} 
-          height={600}
-          contentHeight={600}
-          width= {150}
-          editable={true}
-          slotMinTime = "07:00:00"
-          eventClick = {this.handleEventClick}
-          events={reformatted}
-          allDayText='Deadline'/>
       </div>
     )
   }
