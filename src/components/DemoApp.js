@@ -23,6 +23,10 @@ export default class DemoApp extends React.Component {
     this.props.handleCurrentEventChange(e)
   } 
 
+  handleMouseLeave = (e) => {
+    this.props.handleCurrentEventChange(null)
+  }
+
   deleteEvent = (e) => {
     console.log("delete")
     console.log(e.event.id)

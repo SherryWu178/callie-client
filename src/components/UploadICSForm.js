@@ -5,6 +5,7 @@ import { BASE_URL } from './constants'
 import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
 import { history } from '../helpers/history'
+import bsCustomFileInput from 'bs-custom-file-input'
 
 
 export default class UploadICSForm extends React.Component {
@@ -15,6 +16,11 @@ export default class UploadICSForm extends React.Component {
         file:{}
       }
     }
+
+    componentDidMount() {
+      bsCustomFileInput.init()
+    }
+  
     
     saveIcsFile = () => {
       const data = new FormData()
@@ -83,7 +89,6 @@ export default class UploadICSForm extends React.Component {
     } 
 
     render(){
-      const {url, email, password, mod, file} = this.state
         return(
             <div>
             <h5>Upload an .ics file to sync you local calendar</h5>
@@ -93,6 +98,7 @@ export default class UploadICSForm extends React.Component {
                         id="custom-file"
                         label="Upload an .ics file"
                         onChange={this.changeFile}
+                        class="custom-file-input"
                         custom
                     />
                     {console.log(this.state.file)}

@@ -102,6 +102,12 @@ export default class AddEventForm extends React.Component{
           });
     }
 
+    removeCurrentEvent = () => {
+        this.props.handleCurrentEventChange({
+          event: null
+        })
+      }
+
     componentDidMount(){
         this.getActivityTitle()
     }
@@ -129,7 +135,7 @@ export default class AddEventForm extends React.Component{
         const {eventTitleValue, activityValue, StartTimeValue, EndTimeValue, useSelect, completion} = this.state
         return (
             <div>
-                  <p>Add New Event</p>
+                  <p>Edit Event</p>
                   <Form onSubmit={this.handleSubmit}>
                       <Form.Group controlId="formGroupTitle">
                           <Form.Control type="title" placeholder="Title" value={eventTitleValue} onChange={this.changeTitle}/>
@@ -200,15 +206,21 @@ export default class AddEventForm extends React.Component{
                       </Form.Group>
       
                       <ButtonGroup>
-                          <Button variant="primary" onClick={this.deleteEvent}>
+                          <Button className="mb-2 mr-sm-1" variant="primary" onClick={this.deleteEvent}>
                               Delete
                           </Button>
-                      </ButtonGroup> 
-                      &nbsp;&nbsp;
-                      <ButtonGroup>
-                          <Button variant="primary" type="submit">
+
+                          <Button className="mb-2 mr-sm-1" variant="primary" type="submit">
                               Update
                           </Button>  
+
+                          <Button 
+                            className="mb-2 mr-sm-1"
+                            variant="outline-secondary" 
+                            onClick={this.removeCurrentEvent}
+                            >
+                            Add New Event
+                        </Button>
                       </ButtonGroup>    
                 
                   </Form> 

@@ -7,7 +7,6 @@ import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
 
 
-
 class ManageActivity extends Component {
   constructor(props) {
     super(props)
@@ -42,6 +41,7 @@ class ManageActivity extends Component {
     return (
         <div>
         <h5>Manage your activities</h5>
+        <h6>Delete the activity will delete all related events/deadlines.</h6>
           <div>
             {activities.map(activity=>
               <SingleActivity activity={activity}/>

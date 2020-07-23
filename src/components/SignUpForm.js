@@ -75,7 +75,7 @@ export default function SignUpForm() {
             type="password"
           />
           <Form.Text className="text-muted">
-          The password must contain a minimum of 1 lower case letter, 1 upper case letter, 1 numeric character [0-9] and 1 special character      
+          The password must contain a minimum of 1 lower case letter, 1 upper case letter, 1 numeric character [0-9] and 1 special character and must have a length longer than 6 characters.    
           </Form.Text>
         </FormGroup>
         <FormGroup controlId="password_confirmation" bsSize="large">

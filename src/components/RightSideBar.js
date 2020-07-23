@@ -64,15 +64,18 @@ class RightSideBar extends Component {
 
 
   render(){
-    const {currentEvent} = this.props
     const {activities, events} = this.state    
     return (
         <div className="App-body">
           <div className="outer">
             <div className="inner">
+            {console.log(this.props)}
               {this.props.currentEvent === null
                 ? <AddEventForm ActivityList = {activities}/>
-                : <EditEventForm ActivityList = {activities} currentEvent = {currentEvent}/>
+                : <EditEventForm 
+                ActivityList = {activities} 
+                handleCurrentEventChange = {this.props.handleCurrentEventChange} 
+                currentEvent = {this.props.currentEvent}/>
               }
               
             </div>

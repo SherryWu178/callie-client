@@ -27,19 +27,19 @@ class App extends Component {
 
   render(){
     const {currentEvent} = this.state;
+
     return (
     <React.Fragment>
         <div>
           <NavBar currentUser = {JSON.parse(localStorage.getItem('user'))}/>
         </div>
         <div className="App-body">
-          {/* <WebScrapForm/>  */}
             <div className="row">
               <div className="col-md-8">
                 <DemoApp classNameName="App-body" handleCurrentEventChange = {this.handleCurrentEventChange}/>
               </div>
               <div className="col-md-4">
-                <RightSideBar currentEvent = {currentEvent} />
+                <RightSideBar currentEvent = {currentEvent} handleCurrentEventChange = {this.handleCurrentEventChange}/>
               </div>
             </div>
         </div>
