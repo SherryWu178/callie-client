@@ -114,7 +114,7 @@ export default class DemoApp extends React.Component {
       )
       .then(function (response) {
         console.log(response);
-        // window.location.reload();
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error);
@@ -135,7 +135,7 @@ export default class DemoApp extends React.Component {
     )
     .then(function (response) {
       console.log(response);
-      // window.location.reload();
+      window.location.reload();
     })
     .catch(function (error) {
       console.log(error);
@@ -152,7 +152,7 @@ export default class DemoApp extends React.Component {
         )
         .then(function (response) {
           console.log(response);
-          // window.location.reload();
+          window.location.reload();
         })
         .catch(function (error) {
           console.log(error);
