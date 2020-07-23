@@ -4,6 +4,9 @@ import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import dayGridPlugin from '@fullcalendar/daygrid';
+import moment from 'moment'
+import interactionPlugin from '@fullcalendar/interaction';
 import { BASE_URL } from './constants'
 
 
@@ -16,11 +19,6 @@ export default class DemoApp extends React.Component {
     }
   }
   
-
-  handleEventClick = (e) => {
-    this.props.handleCurrentEventChange(e)
-  } 
-
   deleteEvent = (e) => {
     console.log("delete")
     console.log(e.event.id)
@@ -94,11 +92,95 @@ export default class DemoApp extends React.Component {
         var obj = json[i];
         if (obj.hasOwnProperty('datetime')) {
           obj.allday = true;
+          obj.editable = false;
         } 
       }
       return json;
     };
 
+    handleEventClick = (e) => {
+      this.props.handleCurrentEventChange(e)
+    } 
+    
+    editEvent = (event, config) => {
+        axios.patch(`${BASE_URL}/api/v1/events/${event.id}`,
+        {
+            start_time: event.start,
+            end_time: event.end,
+            duration: moment.duration(moment(event.end, 'YYYY/MM/DD HH:mm')
+            .diff(moment(event.start, 'YYYY/MM/DD HH:mm'))
+            ).asHours(),
+        }, config
+      )
+      .then(function (response) {
+        console.log(response);
+        // window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+    createEvent = (event, config) => {
+      axios.post(`${BASE_URL}/api/v1/events`,
+      {   title: event.title,
+          activity_id: event.extendedProps.activity_id,
+          start_time: event.start,
+          end_time: event.end,
+          duration: moment.duration(moment(event.end, 'YYYY/MM/DD HH:mm')
+          .diff(moment(event.start, 'YYYY/MM/DD HH:mm'))
+          ).asHours(),
+          completion: false,
+      }, config
+    )
+    .then(function (response) {
+      console.log(response);
+      // window.location.reload();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+
+    editDeadline = (event, config) =>{
+      console.log("editDeadline")
+        axios.patch(`${BASE_URL}/api/v1/deadlines/${event.id}`,
+          {
+              datetime: event.start,
+          }, config
+        )
+        .then(function (response) {
+          console.log(response);
+          // window.location.reload();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  }
+    
+
+    handleDropAndDrag = (eventDropInfo) => {
+      const event = eventDropInfo.event
+      const config = {
+          headers: { 
+              'Authorization': `Bearer ${token}`,
+              'Content-type': 'application/json',
+          }
+      };
+      console.log(eventDropInfo.event)
+      const oldDeadline = eventDropInfo.oldEvent.allDay
+      const newDeadline = event.allDay
+      if (oldDeadline){
+        if (newDeadline){
+          this.editDeadline(event, config)
+        } else {
+          this.createEvent(event, config)
+        }
+      }else{
+        this.editEvent(event, config)
+      }
+  }
 
 
   render() {
@@ -108,7 +190,7 @@ export default class DemoApp extends React.Component {
         <FullCalendar 
           defaultView="timeGridWeek"
           firstDay ={1}
-          plugins={[timeGridPlugin]} 
+          plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]} 
           height={600}
           contentHeight={600}
           width= {150}
@@ -116,6 +198,9 @@ export default class DemoApp extends React.Component {
           slotMinTime = "07:00:00"
           eventClick = {this.handleEventClick}
           events={reformatted}
+          header={{left: 'dayGridMonth,timeGridWeek,timeGridDay', center: 'title'}}
+          eventDrop = {this.handleDropAndDrag}
+          eventResize = {this.handleDropAndDrag}
           allDayText='Deadline'/>
       </div>
     )
