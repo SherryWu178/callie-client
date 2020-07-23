@@ -24,7 +24,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 3%;
+  padding: 2%;
   align-items: left;
   justify-content: top;
   /* font-size: calc( 5 + 1.5 vmin); */
@@ -33,16 +33,27 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #9c61fb;
 }
 
-.progress-bar {
-  margin: 3px;
-  background-color: #4AA69F;
-}
 
 .divider {
   height: 1px;
   width: 100%;
   background-color: rgb(158, 158, 158);
+}
+
+.overlay-opacity {
+  opacity: 0.4;
+}
+
+.overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  position: fixed;
+  font-family: Times New Roman
+
 }

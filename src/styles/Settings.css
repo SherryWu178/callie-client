@@ -29,8 +29,19 @@
   color: #61dafb;
 }
 
-.progress-bar {
-  margin: 3px;
+.button{
   background-color: #4AA69F;
 }
 
+.progress-bar-complete {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 3px;
+  background-color: #4AA69F;
+}
+
+.progress-bar-incomplete {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  background-color: #9ba39f;
+}

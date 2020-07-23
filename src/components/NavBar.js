@@ -7,7 +7,7 @@ const logout = () =>{
     localStorage.removeItem('user');
     localStorage.removeItem('user_id');
     localStorage.removeItem('token');
-    history.push('/');
+    history.push('/login');
     window.location.reload(false);
   }
 

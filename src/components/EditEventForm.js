@@ -67,8 +67,28 @@ export default class AddEventForm extends React.Component{
             data: { id: this.props.currentEvent.id }
 
         };
-        axios.delete(`${BASE_URL}/api/v1/events/${this.props.currentEvent.id}`, config)
-        window.location.reload(false);
+        const isDeadline = this.props.currentEvent.allDay
+        if (isDeadline){
+            axios.delete(`${BASE_URL}/api/v1/deadlines/${this.props.currentEvent.id}`, config)
+            .then(response => {
+                console.log(response)
+                window.location.reload(false);
+            })
+              .catch(error => {
+                console.log("Error!!!")
+                console.log(error)
+              })
+        }else{
+            axios.delete(`${BASE_URL}/api/v1/events/${this.props.currentEvent.id}`, config)            
+            .then(response => {
+                console.log(response)
+                window.location.reload(false);
+            })
+            .catch(error => {
+                console.log("Error!!!")
+                console.log(error)
+            })
+        }
     }
 
     handleSubmit = (e) => {
@@ -110,6 +130,7 @@ export default class AddEventForm extends React.Component{
 
     componentDidMount(){
         this.getActivityTitle()
+        console.log(this.props.currentEvent)
     }
 
     componentDidUpdate(prevProps, prevState){

@@ -7,6 +7,7 @@ import LogInForm from './components/LogInForm';
 import SignUpForm from './components/SignUpForm';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
+import { history } from './helpers/history'
 
 
 

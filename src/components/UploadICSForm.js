@@ -69,8 +69,6 @@ export default class UploadICSForm extends React.Component {
         axios.get(`${BASE_URL}/api/v1/events/import`, config)
         .then(response => {
           console.log("Importing Events!!!")
-          history.push('/');
-          window.location.reload(false);
         })
         .catch(error => {
           console.log("Error!!!")

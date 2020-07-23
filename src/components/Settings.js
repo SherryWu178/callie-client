@@ -4,9 +4,6 @@ import NavBar from './NavBar';
 import UploadICSForm from './UploadICSForm'
 import WebScrapForm from './WebScrapForm'
 import ManageActivity from './ManageActivity'
-
-
-
 import '../styles/Settings.css';
 import '../styles/main.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,7 +14,6 @@ export default class Setting extends React.Component {
   constructor(props){
     super(props)
   }
-
 
     render(){
         return(

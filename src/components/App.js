@@ -27,22 +27,35 @@ class App extends Component {
 
   render(){
     const {currentEvent} = this.state;
-
+    const login = localStorage.getItem('user')===null
+    var className = "normal"
+    if (login) {
+        className = "overlay-opacity"
+    }
+    
     return (
     <React.Fragment>
         <div>
           <NavBar currentUser = {JSON.parse(localStorage.getItem('user'))}/>
         </div>
-        <div className="App-body">
-            <div className="row">
-              <div className="col-md-8">
-                <DemoApp classNameName="App-body" handleCurrentEventChange = {this.handleCurrentEventChange}/>
+        <div className = {className} >
+          <div className="App-body">
+              <div className="row">
+                <div className="col-md-8">
+                  <DemoApp handleCurrentEventChange = {this.handleCurrentEventChange}/>
+                </div>
+                <div className="col-md-4">
+                  <RightSideBar currentEvent = {currentEvent} handleCurrentEventChange = {this.handleCurrentEventChange}/>
+                </div>
               </div>
-              <div className="col-md-4">
-                <RightSideBar currentEvent = {currentEvent} handleCurrentEventChange = {this.handleCurrentEventChange}/>
-              </div>
-            </div>
+          </div>
         </div>
+        {login
+        ? <div className="overlay">
+          <h1>Log in to experience the app</h1>
+        </div>
+        : <div></div>}
+        
     </React.Fragment>
         
     );
