@@ -15,6 +15,20 @@ export default function SignUpForm() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState({})
 
+
+  const checkPassword = (inputtxt) => {
+    var passw= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,30}$/;
+    if(passw.test(inputtxt)) 
+    { 
+    return true;
+    }
+    else
+    { 
+    return false;
+  }
+
+  }
+
   const signup = () =>  {
     var creds = {
       user: {
@@ -22,26 +36,28 @@ export default function SignUpForm() {
         email: email,
         password: password,
         password_confirmation: passwordConfirmation,
-        error: {}
       }
     }
 
     axios.post(`${BASE_URL}/api/v1/users`, creds)
       .then((res) => {
-        console.log(res.data)
         localStorage.setItem('user', JSON.stringify(res.data.user))
         localStorage.setItem('user_id', JSON.stringify(res.data.user.id))
         localStorage.setItem('token', JSON.stringify(res.data.token))
-        history.push('/setting'); 
+        history.push('/setup'); 
         window.location.reload(false);
       })
       .catch(err => {
-        console.log(err)
         if (!username||!email||!password||!passwordConfirmation){
           setError(1)
-
         } else {
-          setError(2)
+          console.log(password)
+          console.log(checkPassword(password))
+          if (checkPassword(password)){
+            setError(2)
+          } else {
+            setError(3)
+          }
         }
       })
   }
@@ -107,6 +123,10 @@ export default function SignUpForm() {
               <Form.Text style={{color: "red"}}>Please fill in all fields.</Form.Text>}
             
         {error === 2 && 
+              <Form.Text 
+              style={{color: "red"}}>This username/email is already taken. Please try again.</Form.Text>}
+
+        {error === 3 && 
               <Form.Text 
               style={{color: "red"}}>Your password does not meet the requirement. Please try again.</Form.Text>}
       </Form>

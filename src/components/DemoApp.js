@@ -156,18 +156,47 @@ export default class DemoApp extends React.Component {
   }
     
 
-    handleDropAndDrag = (eventDropInfo) => {
+    handleDrop = (eventDropInfo) => {
       const event = eventDropInfo.event
-      const oldEvent = eventDropInfo.oldEvent
+      const prevEvent = eventDropInfo.oldEvent
       const config = {
           headers: { 
               'Authorization': `Bearer ${token}`,
               'Content-type': 'application/json',
           }
       };
-      console.log(eventDropInfo.event)
-      const oldDeadline = oldEvent.allDay
+      console.log("old event is")
+      console.log(prevEvent)
+
+      const oldDeadline = prevEvent.allDay
       const newDeadline = event.allDay
+      
+      if (oldDeadline){
+        if (newDeadline){
+          this.editDeadline(event, config)
+        } else {
+          this.createEvent(event, config)
+        }
+      }else{
+        this.editEvent(event, config)
+      }
+  }
+
+    handleDrag = (eventDropInfo) => { //working
+      const event = eventDropInfo.event
+      const prevEvent = eventDropInfo.prevEvent
+      const config = {
+          headers: { 
+              'Authorization': `Bearer ${token}`,
+              'Content-type': 'application/json',
+          }
+      };
+      console.log("old event is")
+      console.log(prevEvent)
+
+      const oldDeadline = prevEvent.allDay
+      const newDeadline = event.allDay
+      
       if (oldDeadline){
         if (newDeadline){
           this.editDeadline(event, config)
@@ -196,8 +225,8 @@ export default class DemoApp extends React.Component {
           eventClick = {this.handleEventClick}
           events={reformatted}
           header={{left: 'dayGridMonth,timeGridWeek,timeGridDay', center: 'title'}}
-          eventDrop = {this.handleDropAndDrag}
-          eventResize = {this.handleDropAndDrag}
+          eventDrop = {this.handleDrop}
+          eventResize = {this.handleDrag}
           allDayText='Deadline'/>
       </div>
     )

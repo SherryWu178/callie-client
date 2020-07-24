@@ -164,8 +164,8 @@ export default class AddEventForm extends React.Component{
                             as="select" 
                             value={useSelect} 
                             onChange={(e)=>{this.setState({useSelect:!useSelect})}}>
-                            <option key={1} value={true}>Select Activity</option>
-                            <option key={2} value={false}>Create New Activity</option>
+                            <option key={1} value={true}>Select Tag</option>
+                            <option key={2} value={false}>Create New Tag</option>
                         </Form.Control>
                     </Form.Group>
                     {useSelect                     

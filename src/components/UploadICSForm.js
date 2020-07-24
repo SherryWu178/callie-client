@@ -13,7 +13,7 @@ export default class UploadICSForm extends React.Component {
       super(props)
       this.state = {
         file:{},
-        error:0,
+        error:{},
         success:{}
       }
     }
@@ -37,11 +37,8 @@ export default class UploadICSForm extends React.Component {
       })
       .catch(error => {
         console.log(this.state.file)
-        if (this.state.error===0){
           this.setState({error:1})
-        } else {
-          this.setState({error:2})
-        }
+
         console.log("Error!!!")
         console.log(error)
       })
@@ -64,7 +61,6 @@ export default class UploadICSForm extends React.Component {
         .catch(error => {
           console.log(error)})
           this.setState({error:2})
-
       }
     
     
@@ -77,10 +73,12 @@ export default class UploadICSForm extends React.Component {
         .then(response => {
           console.log("Importing Events!!!")
           this.setState({success:1})
+          window.location.reload();
         })
         .catch(error => {
           console.log("Error!!!")
           console.log(error)
+          this.setState({error:2})
         })
       }
 
@@ -94,6 +92,12 @@ export default class UploadICSForm extends React.Component {
           error:{},
         file: e.target.files[0]
       })
+
+      if (!e.target.files[0].name.endsWith(".ics")) {
+        this.setState({
+          error:2
+        })
+      }
     } 
 
     render(){

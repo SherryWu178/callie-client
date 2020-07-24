@@ -49,7 +49,7 @@ class ManageActivity extends Component {
         <br/> <br/>
           <div>
             {activities.map(activity=>
-              <SingleActivity activity={activity}/>
+              <SingleActivity key={activity.id} activity={activity}/>
             )}
           </div>
         </div>

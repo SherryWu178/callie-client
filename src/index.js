@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import Settings from './components/Settings';
+import SetUp from './components/SetUp';
 import LogInForm from './components/LogInForm';
 import SignUpForm from './components/SignUpForm';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
@@ -14,6 +15,7 @@ ReactDOM.render(
       <div>
         <Route exact path="/" component={App} />
         <Route path="/setting" component={Settings} />
+        <Route path="/setup" component={SetUp} />
         <Route path="/login" component={LogInForm} />
         <Route path="/signup" component={SignUpForm} />
       </div>

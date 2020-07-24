@@ -9,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export default class Setting extends React.Component {
-
     render(){
         return(
           <React.Fragment>
@@ -34,6 +33,5 @@ export default class Setting extends React.Component {
           </React.Fragment>
         )
     }
-    
 }
 
