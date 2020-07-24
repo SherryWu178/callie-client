@@ -14,7 +14,8 @@ export default class UploadICSForm extends React.Component {
       super(props)
       this.state = {
         file:{},
-        error:0
+        error:0,
+        success:{}
       }
     }
 
@@ -77,6 +78,7 @@ export default class UploadICSForm extends React.Component {
         axios.get(`${BASE_URL}/api/v1/events/import`, config)
         .then(response => {
           console.log("Importing Events!!!")
+          this.setState({success:1})
         })
         .catch(error => {
           console.log("Error!!!")
@@ -123,6 +125,10 @@ export default class UploadICSForm extends React.Component {
               className="text" 
               text-color = "red"
               style={{color: "red"}}>The file format is not supported. Please check again.</Form.Text>}
+            {this.state.success === 1 && 
+              <Form.Text 
+              className="text" 
+              style={{color: "green"}}>Successfully uploaded!</Form.Text>} 
             </div>
         )
     }

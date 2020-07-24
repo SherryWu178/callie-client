@@ -16,7 +16,8 @@ export default class WebScrapForm extends React.Component {
       email: {},
       password:{},
       mod:{},
-      error: {}
+      error: {},
+      success: {}
   }
   }
     handleChange = (e) => {
@@ -64,6 +65,8 @@ export default class WebScrapForm extends React.Component {
         axios.get(`${BASE_URL}/api/v1/deadlines/import`, config)
         .then(response => {
           console.log("Importing Deadlines!!!")
+          this.setState({success:1})
+
         })
         .catch(error => {
           console.log("Error!!!")
@@ -127,6 +130,11 @@ export default class WebScrapForm extends React.Component {
               className="text" 
               text-color = "red"
               style={{color: "red"}}>Your login credentials could not be verified, please try again.</Form.Text>}
+
+            {this.state.success === 1 && 
+              <Form.Text 
+              className="text" 
+              style={{color: "green"}}>deadlines successfully retrieved!</Form.Text>} 
             </div>
         )
     }
