@@ -3,7 +3,7 @@ import {Form, Button, FormGroup, FormControl} from "react-bootstrap";
 import axios from 'axios'
 import { history } from '../helpers/history'
 import "../styles/LogInForm.css";
-import { Link, BrowserRouter as Router } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { BASE_URL } from './constants'
 import NavBar from './NavBar';
 
@@ -32,7 +32,6 @@ export default function Login() {
       }
     })
     .then(res => {
-      console.log("Logged in  success!!" + JSON.stringify(res.data.token));
       localStorage.setItem('user', JSON.stringify(res.data.user))
       localStorage.setItem('user_id', JSON.stringify(res.data.user.id))
       localStorage.setItem('token', JSON.stringify(res.data.token))

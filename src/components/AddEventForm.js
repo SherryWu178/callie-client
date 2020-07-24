@@ -77,7 +77,6 @@ const AddEventForm = ({ActivityList}) => {
             .then(function (response) {
                 console.log(response);
                 activityId = response.data.id
-                console.log(activityId);
                 submitEvent()
               })
             .catch(function (error) {
@@ -91,7 +90,7 @@ const AddEventForm = ({ActivityList}) => {
         }
         }
 
-    const handleChange = (e) => {setCompletion(e.target.checked); console.log("is it completed: " + completion)}
+    const handleChange = (e) => {setCompletion(e.target.checked);}
     
     const handleDuplicate = (e) => {
         var invalid = false
@@ -126,7 +125,6 @@ const AddEventForm = ({ActivityList}) => {
                             <option key={2} value={false}>Create New Tag</option>
                         </Form.Control>
                     </Form.Group>
-                    {console.log("userSelect: " + useSelect)}
                     {useSelect                     
                     ? 
                     <Form.Group as={Col} controlId="formControlSelect">
@@ -179,7 +177,6 @@ const AddEventForm = ({ActivityList}) => {
                                 label="Mark as completed" 
                                 checked={completion}
                                 onChange={handleChange}/>
-                                {console.log(completion)}
                       </Form.Group>
       
                 <Button variant="primary" type="submit">

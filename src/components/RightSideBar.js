@@ -1,4 +1,4 @@
-import React, {Component, setState} from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import ProgressBars from './ProgressBars';
 import AddEventForm from './AddEventForm';
@@ -69,7 +69,6 @@ class RightSideBar extends Component {
         <div className="App-body">
           <div className="outer">
             <div className="inner">
-            {console.log(this.props)}
               {this.props.currentEvent === null
                 ? <AddEventForm ActivityList = {activities}/>
                 : <EditEventForm 

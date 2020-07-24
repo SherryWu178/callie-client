@@ -5,24 +5,19 @@ import App from './components/App';
 import Settings from './components/Settings';
 import LogInForm from './components/LogInForm';
 import SignUpForm from './components/SignUpForm';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
-import { history } from './helpers/history'
-
 
 
 ReactDOM.render(
-  <React.StrictMode>
     <Router>
       <div>
         <Route exact path="/" component={App} />
         <Route path="/setting" component={Settings} />
         <Route path="/login" component={LogInForm} />
         <Route path="/signup" component={SignUpForm} />
-
       </div>
-    </Router>
-  </React.StrictMode>,
+    </Router>,
   document.getElementById('root')
 );
 

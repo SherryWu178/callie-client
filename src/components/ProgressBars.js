@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {ProgressBar} from 'react-bootstrap'
 import '../styles/ProgressBars.css';
 import moment from 'moment';
@@ -17,7 +17,6 @@ const ProgressBars = ({ActivityList, EventList}) => {
       }
 
     const filtered = EventList.filter(checkDatetime);
-    console.log(filtered)
 
     function checkComplete(e){
         return e.completion
@@ -29,9 +28,6 @@ const ProgressBars = ({ActivityList, EventList}) => {
     
     var completed = filtered.filter(checkComplete);
     var uncompleted = filtered.filter(checkUncompleted);
-    console.log(completed)
-    console.log(uncompleted)
-
 
     var Complete = new Map();
     for (var i = 0; i < completed.length; i++) {
@@ -47,15 +43,15 @@ const ProgressBars = ({ActivityList, EventList}) => {
     }
 
     var InComplete = new Map();
-    for (var i = 0; i < uncompleted.length; i++) {
-        if (InComplete.has(uncompleted[i].activity_id.toString())){
+    for (var k = 0; k < uncompleted.length; k++) {
+        if (InComplete.has(uncompleted[k].activity_id.toString())){
             InComplete.set(
-                uncompleted[i].activity_id.toString(), 
-                InComplete.get(uncompleted[i].activity_id.toString()) + uncompleted[i].duration);
+                uncompleted[k].activity_id.toString(), 
+                InComplete.get(uncompleted[k].activity_id.toString()) + uncompleted[k].duration);
         } else {
             InComplete.set(
-                uncompleted[i].activity_id.toString(), 
-                uncompleted[i].duration);
+                uncompleted[k].activity_id.toString(), 
+                uncompleted[k].duration);
         }
     }
 
@@ -101,57 +97,3 @@ const ProgressBars = ({ActivityList, EventList}) => {
 }
 
 export default ProgressBars
-
-// var filtered = EventList.filter(checkDatetime);
-//     var completed = filtered.filter(checkComplete);
-//     var uncompleted = filtered.filter(checkUncompleted);
-
-
-//     var mapForCompleted = new Map();
-//     var mapForUncompleted = new Map();
-
-//     for (var i = 0; i < completed.length; i++) {
-//         if (mapForCompleted.has(completed[i].activity_id.toString())){
-//             mapForCompleted.set(
-//                 completed[i].activity_id.toString(), 
-//                 mapForCompleted.get(completed[i].activity_id.toString()) + completed[i].duration);
-//         } else {
-//             mapForCompleted.set(
-//                 completed[i].activity_id.toString(), 
-//                 completed[i].duration);
-//         }
-//     }
-
-//     for (var i = 0; i < uncompleted.length; i++) {
-//         if (mapForUncompleted.has(uncompleted[i].activity_id.toString())){
-//             mapForUncompleted.set(
-//                 completed[i].activity_id.toString(), 
-//                 mapForUncompleted.get(uncompleted[i].activity_id.toString()) + uncompleted[i].duration);
-//         } else {
-//             mapForUncompleted.set(
-//                 uncompleted[i].activity_id.toString(), 
-//                 uncompleted[i].duration);
-//         }
-//     }
-
-//     return(
-//     <div >
-//         <h3>Your Progress For The Week</h3>
-        
-//         {
-//         ActivityList.map(activity=>{
-//             var now = Math.round(mapForCompleted.get(activity.id.toString())/(activity.target))
-//             if (!now){
-//                 now = 0
-//             }
-//             return  <div key={activity.id}>
-//                         {activity.title}
-//                         <ProgressBar 
-//                         label = {now+"%"}
-//                         now = {now} 
-//                         />
-//                     </div>
-//         })
-//         }
-//     </div>
-//     )

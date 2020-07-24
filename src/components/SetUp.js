@@ -34,7 +34,6 @@ export default class SetUp extends React.Component {
           password:this.state.password,
           mod: this.state.mod
         }
-        console.log(data)
 
         const config = {
           headers: { Authorization: `Bearer ${token}` }

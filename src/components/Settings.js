@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {Form, Button, InputGroup} from 'react-bootstrap';
+import React from 'react';
 import NavBar from './NavBar';
 import UploadICSForm from './UploadICSForm'
 import WebScrapForm from './WebScrapForm'
@@ -10,10 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export default class Setting extends React.Component {
-
-  constructor(props){
-    super(props)
-  }
 
     render(){
         return(

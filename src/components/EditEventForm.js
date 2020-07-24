@@ -10,7 +10,6 @@ export default class AddEventForm extends React.Component{
     
     constructor(props) {
         super(props)
-        console.log(this.props.currentEvent)
         this.state = {
             eventTitleValue: this.props.currentEvent.title,
             activityValue: '',
@@ -58,7 +57,6 @@ export default class AddEventForm extends React.Component{
     
     deleteEvent = () => {
         console.log("delete")
-        console.log(this.props.currentEvent.id)
         const config = {
             headers: { 
                 'Authorization': `Bearer ${token}`,
@@ -130,7 +128,6 @@ export default class AddEventForm extends React.Component{
 
     componentDidMount(){
         this.getActivityTitle()
-        console.log(this.props.currentEvent)
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -149,7 +146,6 @@ export default class AddEventForm extends React.Component{
 
     changeTitle = (e) => {
         this.setState({eventTitleValue: e.target.value})
-        console.log(this.state.eventTitleValue)
     }
 
     render(){
@@ -167,12 +163,11 @@ export default class AddEventForm extends React.Component{
                         <Form.Control 
                             as="select" 
                             value={useSelect} 
-                            onChange={(e)=>{this.setState(!useSelect)}}>
+                            onChange={(e)=>{this.setState({useSelect:!useSelect})}}>
                             <option key={1} value={true}>Select Activity</option>
                             <option key={2} value={false}>Create New Activity</option>
                         </Form.Control>
                     </Form.Group>
-                    {console.log("userSelect: " + useSelect)}
                     {useSelect                     
                     ? 
                     <Form.Group as={Col} controlId="formControlSelect">

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import axios from 'axios'
 import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
@@ -20,8 +20,6 @@ export default class DemoApp extends React.Component {
   }
   
   deleteEvent = (e) => {
-    console.log("delete")
-    console.log(e.event.id)
     axios.delete(`${BASE_URL}/api/v1/events/` + e.event.id , {
       data: { id: e.event.id }
      })
@@ -58,8 +56,6 @@ export default class DemoApp extends React.Component {
   }
 
   componentDidMount() {
-    // this.importDeadlines()
-    // this.readEvents()
     this.getEvents()
     this.getDeadlines()
     console.log("User is " + localStorage.getItem('user'))
@@ -88,11 +84,11 @@ export default class DemoApp extends React.Component {
         obj.borderColor = 'white';
       }
 
-      for(var i = 0; i < json.length; i++) {
-        var obj = json[i];
+      for(var j = 0; j < json.length; j++) {
+        var object = json[j];
         if (obj.hasOwnProperty('datetime')) {
-          obj.allday = true;
-          obj.editable = false;
+          object.allday = true;
+          object.editable = false;
         } 
       }
       return json;
@@ -162,6 +158,7 @@ export default class DemoApp extends React.Component {
 
     handleDropAndDrag = (eventDropInfo) => {
       const event = eventDropInfo.event
+      const oldEvent = eventDropInfo.oldEvent
       const config = {
           headers: { 
               'Authorization': `Bearer ${token}`,
@@ -169,7 +166,7 @@ export default class DemoApp extends React.Component {
           }
       };
       console.log(eventDropInfo.event)
-      const oldDeadline = eventDropInfo.oldEvent.allDay
+      const oldDeadline = oldEvent.allDay
       const newDeadline = event.allDay
       if (oldDeadline){
         if (newDeadline){

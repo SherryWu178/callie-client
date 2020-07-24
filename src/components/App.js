@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import Deadlines from './Deadlines';
 import DemoApp from './DemoApp';
-import WebScrapForm from './WebScrapForm';
 import NavBar from './NavBar';
 import RightSideBar from './RightSideBar';
 
@@ -21,7 +19,6 @@ class App extends Component {
     this.setState({
       currentEvent: e.event
     })
-    console.log(this.state.currentEvent)
   }
 
 

@@ -1,10 +1,8 @@
-import React, {Component, setState} from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import {Form, Button, InputGroup, FormControl, Col} from 'react-bootstrap';
 import { BASE_URL } from './constants';
 import { token } from '../helpers/token'
-import { userId } from '../helpers/userId'
-
 
 
 class SingleActivity extends Component {
@@ -25,7 +23,6 @@ class SingleActivity extends Component {
   }
 
   deleteActivity = () => {
-    console.log(this.props.activity.id)
     const config = {
         headers: { 
             'Authorization': `Bearer ${token}`,
@@ -44,14 +41,12 @@ class SingleActivity extends Component {
 
   updateActivity = () => {
     const id = this.props.activity.id
-    console.log(id)
     const config = {
         headers: { 
             'Authorization': `Bearer ${token}`,
             'Content-type': 'application/json',
         }
     };
-    console.log(this.state.newTarget)
     axios.patch(`${BASE_URL}/api/v1/activities/${id}`,
         {
             title: this.state.newTitle,
@@ -104,7 +99,6 @@ class SingleActivity extends Component {
                     onChange = {this.handleChange}/>
                 </InputGroup>
               </Col>
-              {console.log(readOnly)}
               {readOnly
               ?<Button size = "sm" variant="outline-primary" className="mb-2 mr-sm-1"
               onClick={this.switchToEdit}>Edit</Button>

@@ -1,10 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Form, Button, InputGroup} from 'react-bootstrap';
 import axios from 'axios';
 import { BASE_URL } from './constants'
 import { token } from '../helpers/token'
-import { userId } from '../helpers/userId'
-import { history } from '../helpers/history'
 
 
 export default class WebScrapForm extends React.Component {
@@ -36,7 +34,6 @@ export default class WebScrapForm extends React.Component {
           mod: mod,
         }
 
-        console.log(data)
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };

@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
-import {Form, Button, InputGroup} from 'react-bootstrap';
+import React from 'react';
+import {Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { BASE_URL } from './constants'
 import { token } from '../helpers/token'
 import { userId } from '../helpers/userId'
-import { history } from '../helpers/history'
 import bsCustomFileInput from 'bs-custom-file-input'
 
 
@@ -34,7 +33,6 @@ export default class UploadICSForm extends React.Component {
       axios.post(`${BASE_URL}/api/v1/events/write`, data, config)
       .then(response => {
         this.readEvents()
-        console.log(data)
         console.log("Write ics file")
       })
       .catch(error => {
@@ -74,9 +72,7 @@ export default class UploadICSForm extends React.Component {
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-        const data = {
-          user_id: userId
-        }
+
         axios.get(`${BASE_URL}/api/v1/events/import`, config)
         .then(response => {
           console.log("Importing Events!!!")
@@ -125,6 +121,7 @@ export default class UploadICSForm extends React.Component {
 
             {this.state.error === 1 && 
               <Form.Text style={{color: "red"}}>Please upload a file.</Form.Text>}
+            
             {this.state.error === 2 && 
               <Form.Text 
               className="text" 

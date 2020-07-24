@@ -3,7 +3,7 @@ import {Form, Button, FormGroup, FormControl} from "react-bootstrap";
 import axios from 'axios'
 import "../styles/LogInForm.css";
 import { history } from '../helpers/history'
-import { Link, BrowserRouter as Router } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import { BASE_URL } from './constants'
 import NavBar from './NavBar';
 
@@ -97,7 +97,7 @@ export default function SignUpForm() {
         <Button block bsSize="large" type="submit">
           Sign up for new account
         </Button>
-        <Button block bsSize="large" href="/" bsSize="large">
+        <Button block href="/" bsSize="large">
           Back to home
         </Button>
         <FormGroup >
