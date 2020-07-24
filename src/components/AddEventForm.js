@@ -16,6 +16,7 @@ const AddEventForm = ({ActivityList}) => {
     const [EndTimeValue, setEndTimeValue] = useState(CurrentDate);
     const [completion, setCompletion] = useState(false);
     const [useSelect, setUseSelect] = useState(true);
+    const [error,setError] = useState({});
     var activityId = 0
 
 
@@ -92,6 +93,21 @@ const AddEventForm = ({ActivityList}) => {
 
     const handleChange = (e) => {setCompletion(e.target.checked); console.log("is it completed: " + completion)}
     
+    const handleDuplicate = (e) => {
+        var invalid = false
+        for (var i = 0; i <ActivityList.length; i++){
+            if(ActivityList[i].title === e.target.value){
+                invalid = true
+            }
+        }
+        if (invalid === true) {
+            setError(1)
+        } else {
+            setError({})
+            setActivityValue(e.target.value)
+        }
+    }
+
     return (
       <div>
             <p>Add New Event</p>
@@ -127,8 +143,11 @@ const AddEventForm = ({ActivityList}) => {
                         <Form.Control 
                             type="title" 
                             value={activityValue} 
-                            onChange={(e)=>setActivityValue(e.target.value)}
+                            onChange={handleDuplicate}
+                            isValid ={false}
                             />
+                    {error === 1 && 
+                    <Form.Text style={{color: "red"}} >Existing tag</Form.Text>}
                         </Form.Group>
                     }
                 </Form.Row>

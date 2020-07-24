@@ -65,6 +65,8 @@ export default class UploadICSForm extends React.Component {
         })
         .catch(error => {
           console.log(error)})
+          this.setState({error:2})
+
       }
     
     
@@ -92,6 +94,8 @@ export default class UploadICSForm extends React.Component {
 
     changeFile = (e) => {
       this.setState({
+          success:{},
+          error:{},
         file: e.target.files[0]
       })
     } 
@@ -118,6 +122,7 @@ export default class UploadICSForm extends React.Component {
             <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
                         Submit
             </Button>
+
             {this.state.error === 1 && 
               <Form.Text style={{color: "red"}}>Please upload a file.</Form.Text>}
             {this.state.error === 2 && 
@@ -125,6 +130,7 @@ export default class UploadICSForm extends React.Component {
               className="text" 
               text-color = "red"
               style={{color: "red"}}>The file format is not supported. Please check again.</Form.Text>}
+            
             {this.state.success === 1 && 
               <Form.Text 
               className="text" 

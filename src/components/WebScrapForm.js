@@ -58,6 +58,7 @@ export default class WebScrapForm extends React.Component {
       }
     
     importDeadlines = () => {
+      const {url,email,password,mod} = this.state;
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
@@ -69,8 +70,11 @@ export default class WebScrapForm extends React.Component {
 
         })
         .catch(error => {
-          console.log("Error!!!")
-          console.log(error)
+          if (!url||!email||!password||!mod){
+            this.setState({error:1})
+          } else {
+            this.setState({error:2})
+          }
         })
       }
     
@@ -123,12 +127,13 @@ export default class WebScrapForm extends React.Component {
             </Button>
 
             {this.state.error === 1 && 
-              <Form.Text className="text-muted">Please fill in all fields</Form.Text>}
+              <Form.Text 
+              className="text"
+              style={{color: "red"}}>Please fill in all fields</Form.Text>}
             
             {this.state.error === 2 && 
               <Form.Text 
               className="text" 
-              text-color = "red"
               style={{color: "red"}}>Your login credentials could not be verified, please try again.</Form.Text>}
 
             {this.state.success === 1 && 
