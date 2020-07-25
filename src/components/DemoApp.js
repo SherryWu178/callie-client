@@ -56,8 +56,10 @@ export default class DemoApp extends React.Component {
   }
 
   componentDidMount() {
-    this.getEvents()
-    this.getDeadlines()
+    if (!localStorage.getItem('user') === null){
+      this.getEvents()
+      this.getDeadlines()
+    }
     console.log("User is " + localStorage.getItem('user'))
     console.log("User_id is " + localStorage.getItem('user_id'))
     console.log("Token is " + localStorage.getItem('token'))
