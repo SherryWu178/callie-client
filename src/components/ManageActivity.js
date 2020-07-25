@@ -41,7 +41,7 @@ class ManageActivity extends Component {
     return (
         <div>
         <h5>Manage your module commitments!</h5>
-        <h6>Do yo feel your module actually require less or more than the <strong>recommended 10 hours</strong>?</h6>
+        <h6>Do you feel your module actually require less or more than the <strong>recommended 10 hours</strong>?</h6>
         <br/>
         <h6>Edit the expected module commitment hours to keep track of the time you realistically need for the module.</h6>
         <br/>
