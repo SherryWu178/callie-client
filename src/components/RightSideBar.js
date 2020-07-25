@@ -57,10 +57,14 @@ class RightSideBar extends Component {
 
 
   componentDidMount() {
-    if (!localStorage.getItem('user') === null){
+  
+    if (localStorage.getItem("user")===null){
+
+    }else {
       this.getActivity()
       this.getEvents()
     }
+
   }
 
 

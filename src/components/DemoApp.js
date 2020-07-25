@@ -56,7 +56,9 @@ export default class DemoApp extends React.Component {
   }
 
   componentDidMount() {
-    if (!localStorage.getItem('user') === null){
+
+    if (localStorage.getItem('user') === null){
+    } else {
       this.getEvents()
       this.getDeadlines()
     }

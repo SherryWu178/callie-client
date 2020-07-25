@@ -51,8 +51,8 @@ const AddEventForm = ({ActivityList}) => {
             )
             .then(function (response) {
                 console.log(response);
-                history.push('/'); 
-                window.location.reload(false);
+                // history.push('/'); 
+                // window.location.reload(false);
             })
             .catch(function (error) {
                 console.log(error);
