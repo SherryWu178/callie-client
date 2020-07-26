@@ -46,7 +46,6 @@ const AddDeadline = ({ActivityList}) => {
                 }, config
             )
             .then(function (response) {
-                e.preventDefault();
                 console.log(response);
                 // history.push('/'); 
                 // window.location.reload(false);
