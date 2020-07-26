@@ -176,7 +176,7 @@ export default class AddEventForm extends React.Component{
                             value={activityValue} 
                             onChange={(e)=>this.setState({activityValue:e.target.value})}
                             >
-                        {this.props.ActivityList.reverse().map(activity=>
+                        {this.props.ActivityList.map(activity=>
                             <option key={activity.id} value ={activity.title}>{activity.title}</option>)}
                         </Form.Control>
                     </Form.Group>

@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import ProgressBars from './ProgressBars';
-import AddEventForm from './AddEventForm';
-import EditEventForm from './EditEventForm';
+import EventDeadline from './EventDeadline';
 import '../styles/RightSideBar.css';
 import { BASE_URL } from './constants';
 import { token } from '../helpers/token'
@@ -75,14 +74,10 @@ class RightSideBar extends Component {
         <div className="App-body">
           <div className="outer">
             <div className="inner">
-              {this.props.currentEvent === null
-                ? <AddEventForm ActivityList = {activities}/>
-                : <EditEventForm 
+              <EventDeadline
                 ActivityList = {activities} 
                 handleCurrentEventChange = {this.props.handleCurrentEventChange} 
                 currentEvent = {this.props.currentEvent}/>
-              }
-              
             </div>
             <div className="inner">
               <ProgressBars ActivityList = {activities} EventList = {events}/>

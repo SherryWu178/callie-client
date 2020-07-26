@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Form, Button, Col} from 'react-bootstrap';
-import DatetimeRangePicker from 'react-datetime-range-picker';
+import Datetime from 'react-datetime';
 import axios from 'axios'
 import { BASE_URL } from './constants'
 import moment from 'moment'
@@ -8,12 +8,11 @@ import { history } from '../helpers/history'
 import { token } from '../helpers/token'
 
 
-const AddEventForm = ({ActivityList}) => {
+const AddDeadline = ({ActivityList}) => {
     var CurrentDate = moment();  
     const [eventTitleValue, setEventTitleValue] = useState("");
     const [activityValue, setActivityValue] = useState("");
     const [StartTimeValue, setStartTimeValue] = useState(CurrentDate);
-    const [EndTimeValue, setEndTimeValue] = useState(CurrentDate);
     const [completion, setCompletion] = useState(false);
     const [useSelect, setUseSelect] = useState(true);
     const [error,setError] = useState({});
@@ -30,7 +29,7 @@ const AddEventForm = ({ActivityList}) => {
         return activityId;
     }
 
-    const submitEvent = () => {
+    const submitEvent = (e) => {
         const config = {
             headers: { 
                 'Authorization': `Bearer ${token}`,
@@ -38,18 +37,16 @@ const AddEventForm = ({ActivityList}) => {
             }
         };
         
-        axios.post(`${BASE_URL}/api/v1/events`,
+        axios.post(`${BASE_URL}/api/v1/deadlines`,
                 {   title: eventTitleValue,
                     activity_id: activityId,
-                    start_time: StartTimeValue,
-                    end_time: EndTimeValue,
-                    duration: moment.duration(moment(EndTimeValue, 'YYYY/MM/DD HH:mm')
-                    .diff(moment(StartTimeValue, 'YYYY/MM/DD HH:mm'))
-                    ).asHours(),
+                    datetime: StartTimeValue,
                     completion: completion,
+                    allDay: true
                 }, config
             )
             .then(function (response) {
+                e.preventDefault();
                 console.log(response);
                 // history.push('/'); 
                 // window.location.reload(false);
@@ -86,7 +83,8 @@ const AddEventForm = ({ActivityList}) => {
             
         }else{
             activityId = getActivityId(activityValue)
-            submitEvent()
+            submitEvent(e)
+
         }
         }
 
@@ -109,7 +107,7 @@ const AddEventForm = ({ActivityList}) => {
 
     return (
       <div>
-            <p>Add New Event</p>
+            <p>Add New Deadline</p>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formGroupTitle">
                     <Form.Control type="title" placeholder="Title" value={eventTitleValue} onChange={(e)=>setEventTitleValue(e.target.value)}/>
@@ -153,20 +151,18 @@ const AddEventForm = ({ActivityList}) => {
                 <Form.Group>
                     <Form.Row>
                         <Col sm={2}>
-                            <Form.Row>Start:</Form.Row>
-                            <Form.Row>End:</Form.Row>
+                            <Form.Row>Deadline:</Form.Row>
                         </Col>          
                         <Col sm={7}>
-                            <DatetimeRangePicker 
-                                    onStartDateChange = {e=>setStartTimeValue(e)}
-                                    onEndDateChange = {e=>setEndTimeValue(e)}
-                                    dateFormat = "DD-MM-YYYY"
-                                    input={true}
+                            <Datetime 
+                            value={StartTimeValue}
+                            onChange = {e=>setStartTimeValue(e)}
+                            dateFormat = "DD-MM-YYYY"
                                     //startTimeConstraints ={{ minutes: {  step:15 }}}
                                     //endTimeConstraints ={{ minutes: {  step:15 }}}
                                     //inputProps ={{placeholder: dateTime_for_input}}
                                     >
-                            </DatetimeRangePicker>
+                            </Datetime>
                         </Col>
                     </Form.Row>
                 </Form.Group>
@@ -187,4 +183,4 @@ const AddEventForm = ({ActivityList}) => {
     )
 }
  
-export default AddEventForm
+export default AddDeadline

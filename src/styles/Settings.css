@@ -45,3 +45,10 @@
   margin-bottom: 3px;
   background-color: #9ba39f;
 }
+
+.button-long{
+  flex-direction: 'row';
+  justify-content: 'center';
+  align-items: 'center';
+  height:3000px,
+}
