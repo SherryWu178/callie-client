@@ -15,7 +15,8 @@ export default class WebScrapForm extends React.Component {
       password:"",
       mod:"",
       error: {},
-      success: {}
+      success: {},
+      loading: false
   }
   }
     handleChange = (e) => {
@@ -76,6 +77,7 @@ export default class WebScrapForm extends React.Component {
         .then(response => {
           console.log(response)
           console.log("Importing Deadlines!!!")
+          this.setState({loading:false})
           this.setState({success:1})
           window.location.reload();
         })
@@ -90,6 +92,7 @@ export default class WebScrapForm extends React.Component {
 
     handleSubmit = () => {
       this.webscrapDeadline()
+      this.setState({loading:true})
     }
  
 
@@ -128,6 +131,11 @@ export default class WebScrapForm extends React.Component {
             <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
                         Submit
             </Button>
+
+            {this.state.loading === true && 
+              <Form.Text 
+              className="text" 
+              style={{color: "green"}}>retrieving data...</Form.Text>} 
 
             {this.state.error === 1 && 
               <Form.Text 

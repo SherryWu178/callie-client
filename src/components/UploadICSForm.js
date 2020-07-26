@@ -14,7 +14,8 @@ export default class UploadICSForm extends React.Component {
       this.state = {
         file:{},
         error:{},
-        success:{}
+        success:{},
+        loading:false
       }
     }
 
@@ -70,6 +71,7 @@ export default class UploadICSForm extends React.Component {
         axios.get(`${BASE_URL}/api/v1/events/import`, config)
         .then(response => {
           console.log("Importing Events!!!")
+          this.setState({loading: false})
           this.setState({success:1})
           window.location.reload();
         })
@@ -82,6 +84,7 @@ export default class UploadICSForm extends React.Component {
 
     handleSubmit = () => {
       this.saveIcsFile()
+      this.setState({loading: true})
     }
 
     changeFile = (e) => {
@@ -122,6 +125,11 @@ export default class UploadICSForm extends React.Component {
             <Button size="sm" variant="primary" type="submit" onClick={this.handleSubmit}>
                         Submit
             </Button>
+
+            {this.state.loading === true && 
+              <Form.Text 
+              className="text" 
+              style={{color: "green"}}>processing data...</Form.Text>} 
 
             {this.state.error === 1 && 
               <Form.Text style={{color: "red"}}>Please upload a file.</Form.Text>}
