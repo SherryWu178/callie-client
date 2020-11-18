@@ -42,11 +42,8 @@ class ManageActivity extends Component {
         <div>
         <h5>Manage your module commitments!</h5>
         <h6>Do you feel your module actually require less or more than the <strong>recommended 10 hours</strong>?</h6>
-        <br/>
         <h6>Edit the expected module commitment hours to keep track of the time you realistically need for the module.</h6>
-        <br/>
-        <h6>Delete the module you may have droped. Delete the activity will delete <strong>all</strong> related events/deadlines.</h6>
-        <br/> <br/>
+        <h6>Delete the module you may have dropped. Delete the activity will delete <strong>all</strong> related events/deadlines.</h6>
           <div>
             {activities.map(activity=>
               <SingleActivity key={activity.id} activity={activity}/>

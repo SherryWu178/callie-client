@@ -68,7 +68,6 @@ const AddEventForm = ({ActivityList}) => {
         };
                 
         if (!useSelect){
-            e.preventDefault();
             axios.post(`${BASE_URL}/api/v1/activities`,{
                 title: activityValue,
                 target: 10

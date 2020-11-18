@@ -228,7 +228,26 @@ export default class DemoApp extends React.Component {
           slotMinTime = "07:00:00"
           eventClick = {this.handleEventClick}
           events={reformatted}
-          header={{left: 'dayGridMonth,timeGridWeek,timeGridDay', center: 'title'}}
+          customButtons= {{
+            prev: {
+              click: function() {
+                FullCalendar.prev();
+                console.log('clicked the prev button!');
+                console.log(FullCalendar.view)
+                {/* localStorage.setItem('savedMonth',FullCalendar('getView').currentStart); */}
+              }
+            },
+
+            next: {
+              click: function() {
+                FullCalendar.next();
+                console.log('clicked the next button!');
+                console.log(FullCalendar.view)
+              }
+            }
+
+            }}
+          header={{left: 'dayGridMonth,timeGridWeek,timeGridDay', center: 'title', end: 'today prev,next'}}
           eventDrop = {this.handleDrop}
           eventResize = {this.handleDrag}
           allDayText='Deadline'/>
